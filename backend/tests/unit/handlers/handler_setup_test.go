@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"nc-two/bootstrap"
 	"nc-two/controllers"
 	"nc-two/service_layer"
 	"nc-two/service_layer/handlers"
@@ -22,6 +21,5 @@ var (
 		Users: &userApp,
 		Posts: &postApp,
 	}
-	bus        = bootstrap.Bootsrap(*uow, &fakeToken, &fakeAuth, bootstrap.Handler{Users: *s, Posts: *f, Auth: *au})
-	controller = controllers.Bootstrap{UOW: bus.UOW, TK: bus.TK, RD: bus.RD, Handler: bus.Handler}
+	bus = controllers.Bootsrap(*uow, &fakeToken, &fakeAuth, controllers.Handler{Users: *s, Posts: *f, Auth: *au})
 )

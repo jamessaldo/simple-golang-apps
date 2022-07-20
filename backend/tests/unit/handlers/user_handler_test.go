@@ -26,7 +26,7 @@ func TestSaveUser_Success(t *testing.T) {
 	}
 
 	r := gin.Default()
-	r.POST("/users", controller.SaveUser)
+	r.POST("/users", bus.SaveUser)
 	inputJSON := `{
 		"first_name": "victor",
 		"last_name": "steven",
@@ -86,7 +86,7 @@ func Test_SaveUser_Invalidating_Data(t *testing.T) {
 	for _, v := range samples {
 
 		r := gin.Default()
-		r.POST("/users", controller.SaveUser)
+		r.POST("/users", bus.SaveUser)
 		req, err := http.NewRequest(http.MethodPost, "/users", bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -133,7 +133,7 @@ func TestSaveUser_DB_Error(t *testing.T) {
 		}
 	}
 	r := gin.Default()
-	r.POST("/users", controller.SaveUser)
+	r.POST("/users", bus.SaveUser)
 	inputJSON := `{
 		"first_name": "victor",
 		"last_name": "steven",
@@ -176,7 +176,7 @@ func TestGetUsers_Success(t *testing.T) {
 		}, nil
 	}
 	r := gin.Default()
-	r.GET("/users", controller.GetUsers)
+	r.GET("/users", bus.GetUsers)
 
 	req, err := http.NewRequest(http.MethodGet, "/users", nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func TestGetUser_Success(t *testing.T) {
 	}
 	r := gin.Default()
 	userId := strconv.Itoa(1)
-	r.GET("/users/:user_id", controller.GetUser)
+	r.GET("/users/:user_id", bus.GetUser)
 
 	req, err := http.NewRequest(http.MethodGet, "/users/"+userId, nil)
 	if err != nil {

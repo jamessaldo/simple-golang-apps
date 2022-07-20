@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"nc-two/bootstrap"
 	"nc-two/controllers"
 	"nc-two/infrastructure/auth"
 	"nc-two/infrastructure/persistence"
@@ -15,7 +14,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var bus bootstrap.Bootstrap
+var bus controllers.Bootstrap
 
 func init() {
 	//To load our environmental variables.
@@ -52,31 +51,30 @@ func init() {
 	userHandler := handlers.NewUsers(services.User, redisService.Auth, tk)
 	postHandler := handlers.NewPost(services.Post, services.User, redisService.Auth, tk)
 	authHandler := handlers.NewAuthenticate(services.User, redisService.Auth, tk)
-	bus = *bootstrap.Bootsrap(*uow, tk, redisService.Auth, bootstrap.Handler{Users: *userHandler, Posts: *postHandler, Auth: *authHandler})
+	bus = *controllers.Bootsrap(*uow, tk, redisService.Auth, controllers.Handler{Users: *userHandler, Posts: *postHandler, Auth: *authHandler})
 }
 
 func main() {
-	controller := controllers.Bootstrap{UOW: bus.UOW, TK: bus.TK, RD: bus.RD, Handler: bus.Handler}
 
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware()) //For CORS
 
 	//user routes
-	r.POST("/users", controller.SaveUser)
-	r.GET("/users", controller.GetUsers)
-	r.GET("/users/:user_id", controller.GetUser)
+	r.POST("/users", bus.SaveUser)
+	r.GET("/users", bus.GetUsers)
+	r.GET("/users/:user_id", bus.GetUser)
 
 	//post routes
-	r.POST("/post", middleware.AuthMiddleware(), controller.SavePost)
-	r.PUT("/post/:post_id", middleware.AuthMiddleware(), controller.UpdatePost)
-	r.GET("/post/:post_id", controller.GetPostAndCreator)
-	r.DELETE("/post/:post_id", middleware.AuthMiddleware(), controller.DeletePost)
-	r.GET("/post", controller.GetAllPost)
+	r.POST("/post", middleware.AuthMiddleware(), bus.SavePost)
+	r.PUT("/post/:post_id", middleware.AuthMiddleware(), bus.UpdatePost)
+	r.GET("/post/:post_id", bus.GetPostAndCreator)
+	r.DELETE("/post/:post_id", middleware.AuthMiddleware(), bus.DeletePost)
+	r.GET("/post", bus.GetAllPost)
 
 	//authentication routes
-	// r.POST("/login", controller.Login)
-	// r.POST("/logout", controller.Logout)
-	// r.POST("/refresh", controller.Refresh)
+	r.POST("/login", bus.Login)
+	r.POST("/logout", bus.Logout)
+	r.POST("/refresh", bus.Refresh)
 
 	//Starting the application
 	app_port := os.Getenv("PORT") //using heroku host

@@ -68,7 +68,7 @@ func Test_SavePost_Invalid_Data(t *testing.T) {
 		tokenString := fmt.Sprintf("Bearer %v", token)
 
 		r := gin.Default()
-		r.POST("/post", controller.SavePost)
+		r.POST("/post", bus.SavePost)
 		req, err := http.NewRequest(http.MethodPost, "/post", bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -170,7 +170,7 @@ func TestSaverPost_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.POST("/post", controller.SavePost)
+	r.POST("/post", bus.SavePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
@@ -230,7 +230,7 @@ func TestSaverPost_Unauthorized(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.POST("/post", controller.SavePost)
+	r.POST("/post", bus.SavePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
@@ -270,7 +270,7 @@ func TestGetAllPost_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.GET("/post", controller.GetAllPost)
+	r.GET("/post", bus.GetAllPost)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
@@ -308,7 +308,7 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.GET("/post/:post_id", controller.GetPostAndCreator)
+	r.GET("/post/:post_id", bus.GetPostAndCreator)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
@@ -406,7 +406,7 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.PUT("/post/:post_id", controller.UpdatePost)
+	r.PUT("/post/:post_id", bus.UpdatePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
@@ -502,7 +502,7 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.PUT("/post/:post_id", controller.UpdatePost)
+	r.PUT("/post/:post_id", bus.UpdatePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
@@ -574,7 +574,7 @@ func TestUpdatePost_Invalid_Data(t *testing.T) {
 		postID := strconv.Itoa(1)
 
 		r := gin.Default()
-		r.POST("/post/:post_id", controller.UpdatePost)
+		r.POST("/post/:post_id", bus.UpdatePost)
 		req, err := http.NewRequest(http.MethodPost, "/post/"+postID, bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -653,7 +653,7 @@ func TestDeletePost_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.DELETE("/post/:post_id", controller.DeletePost)
+	r.DELETE("/post/:post_id", bus.DeletePost)
 	req.Header.Set("Authorization", tokenString)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"nc-two/domain/models"
 	"net/http"
 	"strconv"
@@ -23,8 +22,7 @@ func (bus *Bootstrap) SaveUser(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, validateErr)
 		return
 	}
-	fmt.Println("cek cek cek")
-	fmt.Println(bus.Handler.Users)
+
 	newUser, err := bus.Handler.Users.SaveUser(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
@@ -51,8 +49,7 @@ func (bus *Bootstrap) GetUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	fmt.Println("ini user Id")
-	fmt.Println(userId)
+
 	user, err := bus.Handler.Users.GetUser(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())

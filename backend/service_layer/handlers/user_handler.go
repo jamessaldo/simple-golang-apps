@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"nc-two/adapters"
 	"nc-two/domain/models"
 	"nc-two/infrastructure/auth"
@@ -24,12 +23,8 @@ func NewUsers(us adapters.UserRepository, rd auth.AuthInterface, tk auth.TokenIn
 }
 
 func (s *Users) SaveUser(user *models.User) (interface{}, map[string]string) {
-	fmt.Println("aselole", user)
-	fmt.Println(s)
-	fmt.Println(s.us)
 	newUser, err := s.us.SaveUser(user)
 	if err != nil {
-		fmt.Println("masuk sini jay")
 		return nil, err
 	}
 	return newUser.PublicUser(), nil

@@ -43,7 +43,7 @@ func Test_Login_Invalid_Data(t *testing.T) {
 	for _, v := range samples {
 
 		r := gin.Default()
-		r.POST("/login", au.Login)
+		r.POST("/login", bus.Login)
 		req, err := http.NewRequest(http.MethodPost, "/login", bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -96,7 +96,7 @@ func Test_Login_Success(t *testing.T) {
 
 	inputJSON := `{"email": "steven@example.com","password": "password"}`
 	r := gin.Default()
-	r.POST("/login", au.Login)
+	r.POST("/login", bus.Login)
 	req, err := http.NewRequest(http.MethodPost, "/login", bytes.NewBufferString(inputJSON))
 	if err != nil {
 		t.Errorf("this is the error: %v\n", err)
@@ -141,7 +141,7 @@ func TestLogout_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.POST("/logout", au.Logout)
+	r.POST("/logout", bus.Logout)
 	req.Header.Set("Authorization", tokenString)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
@@ -175,7 +175,7 @@ func TestRefresh_Success(t *testing.T) {
 	}
 
 	r := gin.Default()
-	r.POST("/refresh", au.Refresh)
+	r.POST("/refresh", bus.Refresh)
 
 	//Note that since we will be cheking this token, A secret is needed. THis secret was used to create the token,
 	//lets set it, so that this test can retrieve it. Setting it this way we save us from importing the .env, which we dont really need.
