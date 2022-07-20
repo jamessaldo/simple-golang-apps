@@ -2,16 +2,16 @@ package persistence
 
 import (
 	"fmt"
-	"nc-two/domain/entity"
-	"nc-two/domain/repository"
+	"nc-two/adapters"
+	"nc-two/domain/models"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 type Repositories struct {
-	User repository.UserRepository
-	Post repository.PostRepository
+	User adapters.UserRepository
+	Post adapters.PostRepository
 	db   *gorm.DB
 }
 
@@ -24,8 +24,8 @@ func NewRepositories(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string
 	db.LogMode(true)
 
 	return &Repositories{
-		User: NewUserRepository(db),
-		Post: NewPostRepository(db),
+		User: adapters.NewUserRepository(db),
+		Post: adapters.NewPostRepository(db),
 		db:   db,
 	}, nil
 }
@@ -37,5 +37,5 @@ func (s *Repositories) Close() error {
 
 //This migrate all tables
 func (s *Repositories) Automigrate() error {
-	return s.db.AutoMigrate(&entity.User{}, &entity.Post{}).Error
+	return s.db.AutoMigrate(&models.User{}, &models.Post{}).Error
 }
