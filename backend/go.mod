@@ -10,7 +10,6 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/joho/godotenv v1.3.0
-	github.com/minio/minio-go/v6 v6.0.50
 	github.com/myesui/uuid v1.0.0 // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/twinj/uuid v1.0.0

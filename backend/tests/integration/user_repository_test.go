@@ -2,7 +2,7 @@ package integration
 
 // import (
 // 	"nc-two/adapters"
-// 	"nc-two/domain/models"
+// 	"nc-two/domain"
 // 	"testing"
 
 // 	"github.com/stretchr/testify/assert"
@@ -17,7 +17,7 @@ package integration
 // 	if err != nil {
 // 		t.Fatalf("want non error, got %#v", err)
 // 	}
-// 	var user = models.User{}
+// 	var user = domain.User{}
 // 	user.Email = "steven@example.com"
 // 	user.FirstName = "victoria"
 // 	user.LastName = "steven"
@@ -47,7 +47,7 @@ package integration
 // 	if err != nil {
 // 		t.Fatalf("want non error, got %#v", err)
 // 	}
-// 	var user = models.User{}
+// 	var user = domain.User{}
 // 	user.Email = "steven@example.com"
 // 	user.FirstName = "Kedu"
 // 	user.LastName = "Nwanne"
@@ -108,7 +108,7 @@ package integration
 // 	if err != nil {
 // 		t.Fatalf("want non error, got %#v", err)
 // 	}
-// 	var user = &models.User{
+// 	var user = &domain.User{
 // 		Email:    "steven@example.com",
 // 		Password: "password",
 // 	}

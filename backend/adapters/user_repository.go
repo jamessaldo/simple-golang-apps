@@ -2,7 +2,7 @@ package adapters
 
 import (
 	"errors"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"nc-two/infrastructure/security"
 	"strings"
 
@@ -16,10 +16,10 @@ type UserRepo struct {
 
 //UserRepo implements the UserRepository interface
 type UserRepository interface {
-	SaveUser(*models.User) (*models.User, map[string]string)
-	GetUser(uint64) (*models.User, error)
-	GetUsers() ([]models.User, error)
-	GetUserByEmailAndPassword(*models.User) (*models.User, map[string]string)
+	SaveUser(*domain.User) (*domain.User, map[string]string)
+	GetUser(uint64) (*domain.User, error)
+	GetUsers() ([]domain.User, error)
+	GetUserByEmailAndPassword(*domain.User) (*domain.User, map[string]string)
 }
 
 func NewUserRepository(db *gorm.DB) *UserRepo {
@@ -28,7 +28,7 @@ func NewUserRepository(db *gorm.DB) *UserRepo {
 
 var _ UserRepository = &UserRepo{}
 
-func (r *UserRepo) SaveUser(user *models.User) (*models.User, map[string]string) {
+func (r *UserRepo) SaveUser(user *domain.User) (*domain.User, map[string]string) {
 	dbErr := map[string]string{}
 	err := r.db.Debug().Create(&user).Error
 	if err != nil {
@@ -44,8 +44,8 @@ func (r *UserRepo) SaveUser(user *models.User) (*models.User, map[string]string)
 	return user, nil
 }
 
-func (r *UserRepo) GetUser(id uint64) (*models.User, error) {
-	var user models.User
+func (r *UserRepo) GetUser(id uint64) (*domain.User, error) {
+	var user domain.User
 	err := r.db.Debug().Where("id = ?", id).Take(&user).Error
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (r *UserRepo) GetUser(id uint64) (*models.User, error) {
 	return &user, nil
 }
 
-func (r *UserRepo) GetUsers() ([]models.User, error) {
-	var users []models.User
+func (r *UserRepo) GetUsers() ([]domain.User, error) {
+	var users []domain.User
 	err := r.db.Debug().Find(&users).Error
 	if err != nil {
 		return nil, err
@@ -68,8 +68,8 @@ func (r *UserRepo) GetUsers() ([]models.User, error) {
 	return users, nil
 }
 
-func (r *UserRepo) GetUserByEmailAndPassword(u *models.User) (*models.User, map[string]string) {
-	var user models.User
+func (r *UserRepo) GetUserByEmailAndPassword(u *domain.User) (*domain.User, map[string]string) {
+	var user domain.User
 	dbErr := map[string]string{}
 	err := r.db.Debug().Where("email = ?", u.Email).Take(&user).Error
 	if gorm.IsRecordNotFoundError(err) {

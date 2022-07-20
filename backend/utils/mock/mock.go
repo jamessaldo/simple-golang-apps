@@ -2,58 +2,58 @@ package mock
 
 import (
 	"mime/multipart"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"nc-two/infrastructure/auth"
 	"net/http"
 )
 
 //UserAppInterface is a mock user app interface
 type UserAppInterface struct {
-	SaveUserFn                  func(*models.User) (*models.User, map[string]string)
-	GetUsersFn                  func() ([]models.User, error)
-	GetUserFn                   func(uint64) (*models.User, error)
-	GetUserByEmailAndPasswordFn func(*models.User) (*models.User, map[string]string)
+	SaveUserFn                  func(*domain.User) (*domain.User, map[string]string)
+	GetUsersFn                  func() ([]domain.User, error)
+	GetUserFn                   func(uint64) (*domain.User, error)
+	GetUserByEmailAndPasswordFn func(*domain.User) (*domain.User, map[string]string)
 }
 
 //SaveUser calls the SaveUserFn
-func (u *UserAppInterface) SaveUser(user *models.User) (*models.User, map[string]string) {
+func (u *UserAppInterface) SaveUser(user *domain.User) (*domain.User, map[string]string) {
 	return u.SaveUserFn(user)
 }
 
 //GetUsersFn calls the GetUsers
-func (u *UserAppInterface) GetUsers() ([]models.User, error) {
+func (u *UserAppInterface) GetUsers() ([]domain.User, error) {
 	return u.GetUsersFn()
 }
 
 //GetUserFn calls the GetUser
-func (u *UserAppInterface) GetUser(userId uint64) (*models.User, error) {
+func (u *UserAppInterface) GetUser(userId uint64) (*domain.User, error) {
 	return u.GetUserFn(userId)
 }
 
 //GetUserByEmailAndPasswordFn calls the GetUserByEmailAndPassword
-func (u *UserAppInterface) GetUserByEmailAndPassword(user *models.User) (*models.User, map[string]string) {
+func (u *UserAppInterface) GetUserByEmailAndPassword(user *domain.User) (*domain.User, map[string]string) {
 	return u.GetUserByEmailAndPasswordFn(user)
 }
 
 //PostAppInterface is a mock post app interface
 type PostAppInterface struct {
-	SavePostFn   func(*models.Post) (*models.Post, map[string]string)
-	GetAllPostFn func() ([]models.Post, error)
-	GetPostFn    func(uint64) (*models.Post, error)
-	UpdatePostFn func(*models.Post) (*models.Post, map[string]string)
+	SavePostFn   func(*domain.Post) (*domain.Post, map[string]string)
+	GetAllPostFn func() ([]domain.Post, error)
+	GetPostFn    func(uint64) (*domain.Post, error)
+	UpdatePostFn func(*domain.Post) (*domain.Post, map[string]string)
 	DeletePostFn func(uint64) error
 }
 
-func (f *PostAppInterface) SavePost(post *models.Post) (*models.Post, map[string]string) {
+func (f *PostAppInterface) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
 	return f.SavePostFn(post)
 }
-func (f *PostAppInterface) GetAllPost() ([]models.Post, error) {
+func (f *PostAppInterface) GetAllPost() ([]domain.Post, error) {
 	return f.GetAllPostFn()
 }
-func (f *PostAppInterface) GetPost(postId uint64) (*models.Post, error) {
+func (f *PostAppInterface) GetPost(postId uint64) (*domain.Post, error) {
 	return f.GetPostFn(postId)
 }
-func (f *PostAppInterface) UpdatePost(post *models.Post) (*models.Post, map[string]string) {
+func (f *PostAppInterface) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
 	return f.UpdatePostFn(post)
 }
 func (f *PostAppInterface) DeletePost(postId uint64) error {

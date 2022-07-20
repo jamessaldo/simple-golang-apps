@@ -2,7 +2,7 @@ package integration
 
 import (
 	"nc-two/adapters"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,7 +13,7 @@ func TestSavePost_Success(t *testing.T) {
 	if err != nil {
 		t.Fatalf("want non error, got %#v", err)
 	}
-	var post = models.Post{}
+	var post = domain.Post{}
 	post.Title = "post title"
 	post.Description = "post description"
 	post.UserID = 1
@@ -39,7 +39,7 @@ func TestSavePost_Success(t *testing.T) {
 // 	if err != nil {
 // 		t.Fatalf("want non error, got %#v", err)
 // 	}
-// 	var post = models.Post{}
+// 	var post = domain.Post{}
 // 	post.Title = "post title"
 // 	post.Description = "post desc"
 // 	post.UserID = 1
@@ -122,7 +122,7 @@ func TestSavePost_Success(t *testing.T) {
 // 	if err != nil {
 // 		t.Fatalf("want non error, got %#v", err)
 // 	}
-// 	var secondPost models.Post
+// 	var secondPost domain.Post
 
 // 	//get the second post title
 // 	for _, v := range posts {

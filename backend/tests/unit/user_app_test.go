@@ -1,8 +1,8 @@
 package unit
 
 import (
-	"nc-two/adapters"
-	"nc-two/domain/models"
+	"nc-two/application"
+	"nc-two/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,33 +11,33 @@ import (
 //IF YOU HAVE TIME, YOU CAN TEST ALL THE METHODS FAILURES
 
 var (
-	saveUserRepo                func(*models.User) (*models.User, map[string]string)
-	getUserRepo                 func(userId uint64) (*models.User, error)
-	getUsersRepo                func() ([]models.User, error)
-	getUserEmailAndPasswordRepo func(*models.User) (*models.User, map[string]string)
+	saveUserRepo                func(*domain.User) (*domain.User, map[string]string)
+	getUserRepo                 func(userId uint64) (*domain.User, error)
+	getUsersRepo                func() ([]domain.User, error)
+	getUserEmailAndPasswordRepo func(*domain.User) (*domain.User, map[string]string)
 )
 
 type fakeUserRepo struct{}
 
-func (u *fakeUserRepo) SaveUser(user *models.User) (*models.User, map[string]string) {
+func (u *fakeUserRepo) SaveUser(user *domain.User) (*domain.User, map[string]string) {
 	return saveUserRepo(user)
 }
-func (u *fakeUserRepo) GetUser(userId uint64) (*models.User, error) {
+func (u *fakeUserRepo) GetUser(userId uint64) (*domain.User, error) {
 	return getUserRepo(userId)
 }
-func (u *fakeUserRepo) GetUsers() ([]models.User, error) {
+func (u *fakeUserRepo) GetUsers() ([]domain.User, error) {
 	return getUsersRepo()
 }
-func (u *fakeUserRepo) GetUserByEmailAndPassword(user *models.User) (*models.User, map[string]string) {
+func (u *fakeUserRepo) GetUserByEmailAndPassword(user *domain.User) (*domain.User, map[string]string) {
 	return getUserEmailAndPasswordRepo(user)
 }
 
-var userRepoFake adapters.UserRepository = &fakeUserRepo{} //this is where the real implementation is swap with our fake implementation
+var userRepoFake application.UserAppInterface = &fakeUserRepo{} //this is where the real implementation is swap with our fake implementation
 
 func TestSaveUser_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	saveUserRepo = func(user *models.User) (*models.User, map[string]string) {
-		return &models.User{
+	saveUserRepo = func(user *domain.User) (*domain.User, map[string]string) {
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
@@ -45,7 +45,7 @@ func TestSaveUser_Success(t *testing.T) {
 			Password:  "password",
 		}, nil
 	}
-	user := &models.User{
+	user := &domain.User{
 		ID:        1,
 		FirstName: "victor",
 		LastName:  "steven",
@@ -61,8 +61,8 @@ func TestSaveUser_Success(t *testing.T) {
 
 func TestGetUser_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	getUserRepo = func(userId uint64) (*models.User, error) {
-		return &models.User{
+	getUserRepo = func(userId uint64) (*domain.User, error) {
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
@@ -80,8 +80,8 @@ func TestGetUser_Success(t *testing.T) {
 
 func TestGetUsers_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	getUsersRepo = func() ([]models.User, error) {
-		return []models.User{
+	getUsersRepo = func() ([]domain.User, error) {
+		return []domain.User{
 			{
 				ID:        1,
 				FirstName: "victor",
@@ -105,8 +105,8 @@ func TestGetUsers_Success(t *testing.T) {
 
 func TestGetUserByEmailAndPassword_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	getUserEmailAndPasswordRepo = func(user *models.User) (*models.User, map[string]string) {
-		return &models.User{
+	getUserEmailAndPasswordRepo = func(user *domain.User) (*domain.User, map[string]string) {
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
@@ -114,7 +114,7 @@ func TestGetUserByEmailAndPassword_Success(t *testing.T) {
 			Password:  "password",
 		}, nil
 	}
-	user := &models.User{
+	user := &domain.User{
 		ID:        1,
 		FirstName: "victor",
 		LastName:  "steven",

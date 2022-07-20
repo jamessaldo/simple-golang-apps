@@ -2,7 +2,7 @@ package adapters
 
 import (
 	"errors"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -14,10 +14,10 @@ type PostRepo struct {
 
 //PostRepo implements the PostRepository interface
 type PostRepository interface {
-	SavePost(*models.Post) (*models.Post, map[string]string)
-	GetPost(uint64) (*models.Post, error)
-	GetAllPost() ([]models.Post, error)
-	UpdatePost(*models.Post) (*models.Post, map[string]string)
+	SavePost(*domain.Post) (*domain.Post, map[string]string)
+	GetPost(uint64) (*domain.Post, error)
+	GetAllPost() ([]domain.Post, error)
+	UpdatePost(*domain.Post) (*domain.Post, map[string]string)
 	DeletePost(uint64) error
 }
 
@@ -27,7 +27,7 @@ func NewPostRepository(db *gorm.DB) *PostRepo {
 
 var _ PostRepository = &PostRepo{}
 
-func (r *PostRepo) SavePost(post *models.Post) (*models.Post, map[string]string) {
+func (r *PostRepo) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
 	dbErr := map[string]string{}
 
 	err := r.db.Debug().Create(&post).Error
@@ -44,8 +44,8 @@ func (r *PostRepo) SavePost(post *models.Post) (*models.Post, map[string]string)
 	return post, nil
 }
 
-func (r *PostRepo) GetPost(id uint64) (*models.Post, error) {
-	var post models.Post
+func (r *PostRepo) GetPost(id uint64) (*domain.Post, error) {
+	var post domain.Post
 	err := r.db.Debug().Where("id = ?", id).Take(&post).Error
 	if err != nil {
 		return nil, errors.New("database error, please try again")
@@ -56,8 +56,8 @@ func (r *PostRepo) GetPost(id uint64) (*models.Post, error) {
 	return &post, nil
 }
 
-func (r *PostRepo) GetAllPost() ([]models.Post, error) {
-	var posts []models.Post
+func (r *PostRepo) GetAllPost() ([]domain.Post, error) {
+	var posts []domain.Post
 	err := r.db.Debug().Limit(100).Order("created_at desc").Find(&posts).Error
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (r *PostRepo) GetAllPost() ([]models.Post, error) {
 	return posts, nil
 }
 
-func (r *PostRepo) UpdatePost(post *models.Post) (*models.Post, map[string]string) {
+func (r *PostRepo) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
 	dbErr := map[string]string{}
 	err := r.db.Debug().Save(&post).Error
 	if err != nil {
@@ -85,7 +85,7 @@ func (r *PostRepo) UpdatePost(post *models.Post) (*models.Post, map[string]strin
 }
 
 func (r *PostRepo) DeletePost(id uint64) error {
-	var post models.Post
+	var post domain.Post
 	err := r.db.Debug().Where("id = ?", id).Delete(&post).Error
 	if err != nil {
 		return errors.New("database error, please try again")

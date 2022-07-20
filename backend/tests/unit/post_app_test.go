@@ -1,8 +1,8 @@
 package unit
 
 import (
-	"nc-two/adapters"
-	"nc-two/domain/models"
+	"nc-two/application"
+	"nc-two/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,23 +13,23 @@ import (
 type fakePostRepo struct{}
 
 var (
-	savePostRepo   func(*models.Post) (*models.Post, map[string]string)
-	getPostRepo    func(uint64) (*models.Post, error)
-	getAllPostRepo func() ([]models.Post, error)
-	updatePostRepo func(*models.Post) (*models.Post, map[string]string)
+	savePostRepo   func(*domain.Post) (*domain.Post, map[string]string)
+	getPostRepo    func(uint64) (*domain.Post, error)
+	getAllPostRepo func() ([]domain.Post, error)
+	updatePostRepo func(*domain.Post) (*domain.Post, map[string]string)
 	deletePostRepo func(uint64) error
 )
 
-func (f *fakePostRepo) SavePost(post *models.Post) (*models.Post, map[string]string) {
+func (f *fakePostRepo) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
 	return savePostRepo(post)
 }
-func (f *fakePostRepo) GetPost(postId uint64) (*models.Post, error) {
+func (f *fakePostRepo) GetPost(postId uint64) (*domain.Post, error) {
 	return getPostRepo(postId)
 }
-func (f *fakePostRepo) GetAllPost() ([]models.Post, error) {
+func (f *fakePostRepo) GetAllPost() ([]domain.Post, error) {
 	return getAllPostRepo()
 }
-func (f *fakePostRepo) UpdatePost(post *models.Post) (*models.Post, map[string]string) {
+func (f *fakePostRepo) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
 	return updatePostRepo(post)
 }
 func (f *fakePostRepo) DeletePost(postId uint64) error {
@@ -37,19 +37,19 @@ func (f *fakePostRepo) DeletePost(postId uint64) error {
 }
 
 //var fakePost repository.PostRepository = &fakePostRepo{} //this is where the real implementation is swap with our fake implementation
-var postRepoFake adapters.PostRepository = &fakePostRepo{} //this is where the real implementation is swap with our fake implementation
+var postRepoFake application.PostAppInterface = &fakePostRepo{} //this is where the real implementation is swap with our fake implementation
 
 func TestSavePost_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	savePostRepo = func(user *models.Post) (*models.Post, map[string]string) {
-		return &models.Post{
+	savePostRepo = func(user *domain.Post) (*domain.Post, map[string]string) {
+		return &domain.Post{
 			ID:          1,
 			Title:       "post title",
 			Description: "post description",
 			UserID:      1,
 		}, nil
 	}
-	post := &models.Post{
+	post := &domain.Post{
 		ID:          1,
 		Title:       "post title",
 		Description: "post description",
@@ -64,8 +64,8 @@ func TestSavePost_Success(t *testing.T) {
 
 func TestGetPost_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	getPostRepo = func(postId uint64) (*models.Post, error) {
-		return &models.Post{
+	getPostRepo = func(postId uint64) (*domain.Post, error) {
+		return &domain.Post{
 			ID:          1,
 			Title:       "post title",
 			Description: "post description",
@@ -82,8 +82,8 @@ func TestGetPost_Success(t *testing.T) {
 
 func TestAllPost_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	getAllPostRepo = func() ([]models.Post, error) {
-		return []models.Post{
+	getAllPostRepo = func() ([]domain.Post, error) {
+		return []domain.Post{
 			{
 				ID:          1,
 				Title:       "post title first",
@@ -105,15 +105,15 @@ func TestAllPost_Success(t *testing.T) {
 
 func TestUpdatePost_Success(t *testing.T) {
 	//Mock the response coming from the infrastructure
-	updatePostRepo = func(user *models.Post) (*models.Post, map[string]string) {
-		return &models.Post{
+	updatePostRepo = func(user *domain.Post) (*domain.Post, map[string]string) {
+		return &domain.Post{
 			ID:          1,
 			Title:       "post title update",
 			Description: "post description update",
 			UserID:      1,
 		}, nil
 	}
-	post := &models.Post{
+	post := &domain.Post{
 		ID:          1,
 		Title:       "post title update",
 		Description: "post description update",

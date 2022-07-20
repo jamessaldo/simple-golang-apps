@@ -3,7 +3,7 @@ package persistence
 import (
 	"fmt"
 	"nc-two/adapters"
-	"nc-two/domain/models"
+	"nc-two/domain"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -37,5 +37,5 @@ func (s *Repositories) Close() error {
 
 //This migrate all tables
 func (s *Repositories) Automigrate() error {
-	return s.db.AutoMigrate(&models.User{}, &models.Post{}).Error
+	return s.db.AutoMigrate(&domain.User{}, &domain.Post{}).Error
 }

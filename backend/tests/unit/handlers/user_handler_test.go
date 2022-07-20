@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -17,8 +17,8 @@ import (
 //IF YOU HAVE TIME, YOU CAN TEST ALL FAILURE CASES TO IMPROVE COVERAGE
 
 func TestSaveUser_Success(t *testing.T) {
-	userApp.SaveUserFn = func(*models.User) (*models.User, map[string]string) {
-		return &models.User{
+	userApp.SaveUserFn = func(*domain.User) (*domain.User, map[string]string) {
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
@@ -26,7 +26,7 @@ func TestSaveUser_Success(t *testing.T) {
 	}
 
 	r := gin.Default()
-	r.POST("/users", bus.SaveUser)
+	r.POST("/users", handler.SaveUser)
 	inputJSON := `{
 		"first_name": "victor",
 		"last_name": "steven",
@@ -40,7 +40,7 @@ func TestSaveUser_Success(t *testing.T) {
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	user := &models.User{}
+	user := &domain.User{}
 
 	err = json.Unmarshal(rr.Body.Bytes(), &user)
 
@@ -86,7 +86,7 @@ func Test_SaveUser_Invalidating_Data(t *testing.T) {
 	for _, v := range samples {
 
 		r := gin.Default()
-		r.POST("/users", bus.SaveUser)
+		r.POST("/users", handler.SaveUser)
 		req, err := http.NewRequest(http.MethodPost, "/users", bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -127,13 +127,13 @@ func Test_SaveUser_Invalidating_Data(t *testing.T) {
 //One of such db error is invalid email, it return that from the application and test.
 func TestSaveUser_DB_Error(t *testing.T) {
 	//application.UserApp = &fakeUserApp{}
-	userApp.SaveUserFn = func(*models.User) (*models.User, map[string]string) {
+	userApp.SaveUserFn = func(*domain.User) (*domain.User, map[string]string) {
 		return nil, map[string]string{
 			"email_taken": "email already taken",
 		}
 	}
 	r := gin.Default()
-	r.POST("/users", bus.SaveUser)
+	r.POST("/users", handler.SaveUser)
 	inputJSON := `{
 		"first_name": "victor",
 		"last_name": "steven",
@@ -160,9 +160,9 @@ func TestSaveUser_DB_Error(t *testing.T) {
 
 //GetUsers Test
 func TestGetUsers_Success(t *testing.T) {
-	userApp.GetUsersFn = func() ([]models.User, error) {
+	userApp.GetUsersFn = func() ([]domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return []models.User{
+		return []domain.User{
 			{
 				ID:        1,
 				FirstName: "victor",
@@ -176,7 +176,7 @@ func TestGetUsers_Success(t *testing.T) {
 		}, nil
 	}
 	r := gin.Default()
-	r.GET("/users", bus.GetUsers)
+	r.GET("/users", handler.GetUsers)
 
 	req, err := http.NewRequest(http.MethodGet, "/users", nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func TestGetUsers_Success(t *testing.T) {
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	var users []models.User
+	var users []domain.User
 
 	err = json.Unmarshal(rr.Body.Bytes(), &users)
 
@@ -198,9 +198,9 @@ func TestGetUsers_Success(t *testing.T) {
 //GetUser Test
 func TestGetUser_Success(t *testing.T) {
 	//application.UserApp = &fakeUserApp{}
-	userApp.GetUserFn = func(uint64) (*models.User, error) {
+	userApp.GetUserFn = func(uint64) (*domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return &models.User{
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
@@ -208,7 +208,7 @@ func TestGetUser_Success(t *testing.T) {
 	}
 	r := gin.Default()
 	userId := strconv.Itoa(1)
-	r.GET("/users/:user_id", bus.GetUser)
+	r.GET("/users/:user_id", handler.GetUser)
 
 	req, err := http.NewRequest(http.MethodGet, "/users/"+userId, nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func TestGetUser_Success(t *testing.T) {
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	var user *models.User
+	var user *domain.User
 
 	err = json.Unmarshal(rr.Body.Bytes(), &user)
 

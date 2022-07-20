@@ -3,7 +3,7 @@ package integration
 import (
 	"fmt"
 	"log"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -40,13 +40,13 @@ func LocalDatabase() (*gorm.DB, error) {
 		log.Println("CONNECTED TO: ", dbdriver)
 	}
 
-	err = conn.DropTableIfExists(&models.User{}, &models.Post{}).Error
+	err = conn.DropTableIfExists(&domain.User{}, &domain.Post{}).Error
 	if err != nil {
 		return nil, err
 	}
 	err = conn.Debug().AutoMigrate(
-		models.User{},
-		models.Post{},
+		domain.User{},
+		domain.Post{},
 	).Error
 	if err != nil {
 		return nil, err
@@ -54,8 +54,8 @@ func LocalDatabase() (*gorm.DB, error) {
 	return conn, nil
 }
 
-func seedUser(db *gorm.DB) (*models.User, error) {
-	user := &models.User{
+func seedUser(db *gorm.DB) (*domain.User, error) {
+	user := &domain.User{
 		ID:        1,
 		FirstName: "vic",
 		LastName:  "stev",
@@ -70,8 +70,8 @@ func seedUser(db *gorm.DB) (*models.User, error) {
 	return user, nil
 }
 
-func seedUsers(db *gorm.DB) ([]models.User, error) {
-	users := []models.User{
+func seedUsers(db *gorm.DB) ([]domain.User, error) {
+	users := []domain.User{
 		{
 			ID:        1,
 			FirstName: "vic",
@@ -98,8 +98,8 @@ func seedUsers(db *gorm.DB) ([]models.User, error) {
 	return users, nil
 }
 
-func seedPost(db *gorm.DB) (*models.Post, error) {
-	post := &models.Post{
+func seedPost(db *gorm.DB) (*domain.Post, error) {
+	post := &domain.Post{
 		ID:          1,
 		Title:       "post title",
 		Description: "post desc",
@@ -112,8 +112,8 @@ func seedPost(db *gorm.DB) (*models.Post, error) {
 	return post, nil
 }
 
-func seedPosts(db *gorm.DB) ([]models.Post, error) {
-	posts := []models.Post{
+func seedPosts(db *gorm.DB) ([]domain.Post, error) {
+	posts := []domain.Post{
 		{
 			ID:          1,
 			Title:       "first post",

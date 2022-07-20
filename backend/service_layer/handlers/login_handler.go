@@ -2,9 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"nc-two/adapters"
-	"nc-two/domain/models"
-	"nc-two/infrastructure/auth"
+	"nc-two/domain"
 	"net/http"
 	"os"
 	"strconv"
@@ -13,23 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Authenticate struct {
-	us adapters.UserRepository
-	rd auth.AuthInterface
-	tk auth.TokenInterface
-}
-
-//Authenticate constructor
-func NewAuthenticate(uRepo adapters.UserRepository, rd auth.AuthInterface, tk auth.TokenInterface) *Authenticate {
-	return &Authenticate{
-		us: uRepo,
-		rd: rd,
-		tk: tk,
-	}
-}
-
-func (au *Authenticate) Login(c *gin.Context) {
-	var user *models.User
+func (handler *Handler) Login(c *gin.Context) {
+	var user *domain.User
 	var tokenErr = map[string]string{}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -42,18 +25,18 @@ func (au *Authenticate) Login(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, validateUser)
 		return
 	}
-	u, userErr := au.us.GetUserByEmailAndPassword(user)
+	u, userErr := handler.userApp.GetUserByEmailAndPassword(user)
 	if userErr != nil {
 		c.JSON(http.StatusInternalServerError, userErr)
 		return
 	}
-	ts, tErr := au.tk.CreateToken(u.ID)
+	ts, tErr := handler.tk.CreateToken(u.ID)
 	if tErr != nil {
 		tokenErr["token_error"] = tErr.Error()
 		c.JSON(http.StatusUnprocessableEntity, tErr.Error())
 		return
 	}
-	saveErr := au.rd.CreateAuth(u.ID, ts)
+	saveErr := handler.rd.CreateAuth(u.ID, ts)
 	if saveErr != nil {
 		c.JSON(http.StatusInternalServerError, saveErr.Error())
 		return
@@ -68,15 +51,15 @@ func (au *Authenticate) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, userData)
 }
 
-func (au *Authenticate) Logout(c *gin.Context) {
+func (handler *Handler) Logout(c *gin.Context) {
 	//check is the user is authenticated first
-	metadata, err := au.tk.ExtractTokenMetadata(c.Request)
+	metadata, err := handler.tk.ExtractTokenMetadata(c.Request)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 	//if the access token exist and it is still valid, then delete both the access token and the refresh token
-	deleteErr := au.rd.DeleteTokens(metadata)
+	deleteErr := handler.rd.DeleteTokens(metadata)
 	if deleteErr != nil {
 		c.JSON(http.StatusUnauthorized, deleteErr.Error())
 		return
@@ -85,7 +68,7 @@ func (au *Authenticate) Logout(c *gin.Context) {
 }
 
 //Refresh is the function that uses the refresh_token to generate new pairs of refresh and access tokens.
-func (au *Authenticate) Refresh(c *gin.Context) {
+func (handler *Handler) Refresh(c *gin.Context) {
 	mapToken := map[string]string{}
 	if err := c.ShouldBindJSON(&mapToken); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
@@ -125,19 +108,19 @@ func (au *Authenticate) Refresh(c *gin.Context) {
 			return
 		}
 		//Delete the previous Refresh Token
-		delErr := au.rd.DeleteRefresh(refreshUuid)
+		delErr := handler.rd.DeleteRefresh(refreshUuid)
 		if delErr != nil { //if any goes wrong
 			c.JSON(http.StatusUnauthorized, "unauthorized")
 			return
 		}
 		//Create new pairs of refresh and access tokens
-		ts, createErr := au.tk.CreateToken(userId)
+		ts, createErr := handler.tk.CreateToken(userId)
 		if createErr != nil {
 			c.JSON(http.StatusForbidden, createErr.Error())
 			return
 		}
 		//save the tokens metadata to redis
-		saveErr := au.rd.CreateAuth(userId, ts)
+		saveErr := handler.rd.CreateAuth(userId, ts)
 		if saveErr != nil {
 			c.JSON(http.StatusForbidden, saveErr.Error())
 			return

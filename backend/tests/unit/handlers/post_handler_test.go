@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"mime/multipart"
-	"nc-two/domain/models"
+	"nc-two/domain"
 	"nc-two/infrastructure/auth"
 	"net/http"
 	"net/http/httptest"
@@ -68,7 +68,7 @@ func Test_SavePost_Invalid_Data(t *testing.T) {
 		tokenString := fmt.Sprintf("Bearer %v", token)
 
 		r := gin.Default()
-		r.POST("/post", bus.SavePost)
+		r.POST("/post", handler.SavePost)
 		req, err := http.NewRequest(http.MethodPost, "/post", bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -115,18 +115,17 @@ func TestSaverPost_Success(t *testing.T) {
 	fakeAuth.FetchAuthFn = func(uuid string) (uint64, error) {
 		return 1, nil
 	}
-	userApp.GetUserFn = func(uint64) (*models.User, error) {
+	userApp.GetUserFn = func(uint64) (*domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return &models.User{
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
 		}, nil
 	}
-
 	//Mocking The Post return from db
-	postApp.SavePostFn = func(*models.Post) (*models.Post, map[string]string) {
-		return &models.Post{
+	postApp.SavePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title",
@@ -170,13 +169,13 @@ func TestSaverPost_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.POST("/post", bus.SavePost)
+	r.POST("/post", handler.SavePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	var post = models.Post{}
+	var post = domain.Post{}
 	err = json.Unmarshal(rr.Body.Bytes(), &post)
 	if err != nil {
 		t.Errorf("cannot unmarshal response: %v\n", err)
@@ -230,7 +229,7 @@ func TestSaverPost_Unauthorized(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.POST("/post", bus.SavePost)
+	r.POST("/post", handler.SavePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
@@ -249,8 +248,8 @@ func TestGetAllPost_Success(t *testing.T) {
 	//application.PostApp = &fakePostApp{} //make it possible to change real method with fake
 
 	//Return Post to check for, with our mock
-	postApp.GetAllPostFn = func() ([]models.Post, error) {
-		return []models.Post{
+	postApp.GetAllPostFn = func() ([]domain.Post, error) {
+		return []domain.Post{
 			{
 				ID:          1,
 				UserID:      1,
@@ -270,11 +269,11 @@ func TestGetAllPost_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.GET("/post", bus.GetAllPost)
+	r.GET("/post", handler.GetAllPost)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	var post []models.Post
+	var post []domain.Post
 	err = json.Unmarshal(rr.Body.Bytes(), &post)
 	if err != nil {
 		t.Errorf("cannot unmarshal response: %v\n", err)
@@ -285,17 +284,17 @@ func TestGetAllPost_Success(t *testing.T) {
 
 func TestGetPostAndCreator_Success(t *testing.T) {
 
-	userApp.GetUserFn = func(uint64) (*models.User, error) {
+	userApp.GetUserFn = func(uint64) (*domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return &models.User{
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
 		}, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*models.Post, error) {
-		return &models.Post{
+	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title",
@@ -308,7 +307,7 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.GET("/post/:post_id", bus.GetPostAndCreator)
+	r.GET("/post/:post_id", handler.GetPostAndCreator)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
@@ -342,17 +341,17 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 	fakeAuth.FetchAuthFn = func(uuid string) (uint64, error) {
 		return 1, nil
 	}
-	userApp.GetUserFn = func(uint64) (*models.User, error) {
+	userApp.GetUserFn = func(uint64) (*domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return &models.User{
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
 		}, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*models.Post, error) {
-		return &models.Post{
+	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title",
@@ -360,8 +359,8 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 		}, nil
 	}
 	//Mocking The Post return from db
-	postApp.UpdatePostFn = func(*models.Post) (*models.Post, map[string]string) {
-		return &models.Post{
+	postApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title updated",
@@ -406,13 +405,13 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.PUT("/post/:post_id", bus.UpdatePost)
+	r.PUT("/post/:post_id", handler.UpdatePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	var post = models.Post{}
+	var post = domain.Post{}
 	err = json.Unmarshal(rr.Body.Bytes(), &post)
 	if err != nil {
 		t.Errorf("cannot unmarshal response: %v\n", err)
@@ -438,17 +437,17 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 	fakeAuth.FetchAuthFn = func(uuid string) (uint64, error) {
 		return 1, nil
 	}
-	userApp.GetUserFn = func(uint64) (*models.User, error) {
+	userApp.GetUserFn = func(uint64) (*domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return &models.User{
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
 		}, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*models.Post, error) {
-		return &models.Post{
+	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title",
@@ -456,8 +455,8 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 		}, nil
 	}
 	//Mocking The Post return from db
-	postApp.UpdatePostFn = func(*models.Post) (*models.Post, map[string]string) {
-		return &models.Post{
+	postApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title updated",
@@ -502,13 +501,13 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.PUT("/post/:post_id", bus.UpdatePost)
+	r.PUT("/post/:post_id", handler.UpdatePost)
 	req.Header.Set("Authorization", tokenString)
 	req.Header.Set("Content-Type", multipartWriter.FormDataContentType()) //this is important
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	var post = models.Post{}
+	var post = domain.Post{}
 	err = json.Unmarshal(rr.Body.Bytes(), &post)
 	if err != nil {
 		t.Errorf("cannot unmarshal response: %v\n", err)
@@ -574,7 +573,7 @@ func TestUpdatePost_Invalid_Data(t *testing.T) {
 		postID := strconv.Itoa(1)
 
 		r := gin.Default()
-		r.POST("/post/:post_id", bus.UpdatePost)
+		r.POST("/post/:post_id", handler.UpdatePost)
 		req, err := http.NewRequest(http.MethodPost, "/post/"+postID, bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v\n", err)
@@ -621,17 +620,17 @@ func TestDeletePost_Success(t *testing.T) {
 		return 1, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*models.Post, error) {
-		return &models.Post{
+	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+		return &domain.Post{
 			ID:          1,
 			UserID:      1,
 			Title:       "Post title",
 			Description: "Post description",
 		}, nil
 	}
-	userApp.GetUserFn = func(uint64) (*models.User, error) {
+	userApp.GetUserFn = func(uint64) (*domain.User, error) {
 		//remember we are running sensitive info such as email and password
-		return &models.User{
+		return &domain.User{
 			ID:        1,
 			FirstName: "victor",
 			LastName:  "steven",
@@ -653,7 +652,7 @@ func TestDeletePost_Success(t *testing.T) {
 		t.Errorf("this is the error: %v\n", err)
 	}
 	r := gin.Default()
-	r.DELETE("/post/:post_id", bus.DeletePost)
+	r.DELETE("/post/:post_id", handler.DeletePost)
 	req.Header.Set("Authorization", tokenString)
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
@@ -665,5 +664,5 @@ func TestDeletePost_Success(t *testing.T) {
 		t.Errorf("cannot unmarshal response: %v\n", err)
 	}
 	assert.Equal(t, rr.Code, 200)
-	assert.EqualValues(t, response, "Post deleted successfully")
+	assert.EqualValues(t, response, "post deleted")
 }
