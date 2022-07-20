@@ -23,7 +23,7 @@ func (bus *Bootstrap) SavePost(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, "unauthorized")
 		return
 	}
-	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
+
 	var savePostError = make(map[string]string)
 
 	title := c.PostForm("title")
@@ -34,11 +34,13 @@ func (bus *Bootstrap) SavePost(c *gin.Context) {
 		})
 		return
 	}
-	//We initialize a new post for the purpose of validating: in case the payload is empty or an invalid data type is used
-	emptyPost := models.Post{}
-	emptyPost.Title = title
-	emptyPost.Description = description
-	savePostError = emptyPost.Validate("")
+
+	post := models.Post{}
+	post.UserID = userId
+	post.Title = title
+	post.Description = description
+	// post.PostImage = uploadedFile
+	savePostError = post.Validate("")
 	if len(savePostError) > 0 {
 		c.JSON(http.StatusUnprocessableEntity, savePostError)
 		return
@@ -51,11 +53,6 @@ func (bus *Bootstrap) SavePost(c *gin.Context) {
 		return
 	}
 
-	var post = models.Post{}
-	post.UserID = userId
-	post.Title = title
-	post.Description = description
-	// post.PostImage = uploadedFile
 	savedPost, saveErr := bus.Handler.Posts.SavePost(&post)
 	if saveErr != nil {
 		c.JSON(http.StatusInternalServerError, saveErr)
@@ -77,7 +74,7 @@ func (bus *Bootstrap) UpdatePost(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, "unauthorized")
 		return
 	}
-	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
+
 	var updatePostError = make(map[string]string)
 
 	postId, err := strconv.ParseUint(c.Param("post_id"), 10, 64)
