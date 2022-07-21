@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"runtime"
 
 	"nctwo/mailer/tasks"
 
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
+	runtime.GOMAXPROCS(2)
+
 	// Create and configuring Redis connection.
 	redisConnection := asynq.RedisClientOpt{
 		Addr: "localhost:6379", // Redis server address

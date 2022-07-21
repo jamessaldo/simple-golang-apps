@@ -1,6 +1,8 @@
 run:
 	cd backend && go run main.go
+run-worker:
+	cd mailer && go run server.go
 build:
-	cd backend && go build && cd .. && cd mailer && go build
+	go build ./...
 test:
 	cd backend && go test ./tests/...
