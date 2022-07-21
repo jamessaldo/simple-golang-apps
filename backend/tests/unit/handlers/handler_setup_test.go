@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"nc-two/service_layer/handlers"
+	"nc-two/handlers"
 	"nc-two/utils/mock"
 )
 
