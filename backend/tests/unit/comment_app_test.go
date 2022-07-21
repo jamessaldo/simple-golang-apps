@@ -1,8 +1,8 @@
 package unit
 
 import (
-	"nc-two/application"
-	"nc-two/domain"
+	"nctwo/backend/application"
+	"nctwo/backend/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

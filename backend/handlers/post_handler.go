@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"nc-two/domain"
+	"nctwo/backend/domain"
 	"net/http"
 	"strconv"
 	"time"

@@ -1,6 +1,6 @@
 package handlers
 
-import "nc-two/interfaces/middleware"
+import "nctwo/backend/interfaces/middleware"
 
 func (s *Server) InitializeRoutes() {
 	s.Router.Use(middleware.CORSMiddleware()) //For CORS

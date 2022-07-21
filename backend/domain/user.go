@@ -2,7 +2,7 @@ package domain
 
 import (
 	"html"
-	"nc-two/infrastructure/security"
+	"nctwo/backend/infrastructure/security"
 	"strings"
 	"time"
 

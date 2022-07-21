@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"nc-two/domain"
+	"nctwo/backend/domain"
 	"net/http"
 	"net/http/httptest"
 	"strconv"

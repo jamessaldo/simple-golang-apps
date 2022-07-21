@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"nc-two/application"
-	"nc-two/infrastructure/auth"
+	"nctwo/backend/application"
+	"nctwo/backend/infrastructure/auth"
 
 	"github.com/gin-gonic/gin"
 )

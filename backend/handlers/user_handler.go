@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"nc-two/domain"
+	"nctwo/backend/domain"
 	"net/http"
 	"strconv"
 

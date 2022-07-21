@@ -1,8 +1,8 @@
 package application
 
 import (
-	"nc-two/adapters"
-	"nc-two/domain"
+	"nctwo/backend/adapters"
+	"nctwo/backend/domain"
 )
 
 type userApp struct {

@@ -3,7 +3,7 @@ package middleware
 import (
 	"bytes"
 	"io/ioutil"
-	"nc-two/infrastructure/auth"
+	"nctwo/backend/infrastructure/auth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

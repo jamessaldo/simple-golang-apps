@@ -2,8 +2,8 @@ package mock
 
 import (
 	"mime/multipart"
-	"nc-two/domain"
-	"nc-two/infrastructure/auth"
+	"nctwo/backend/domain"
+	"nctwo/backend/infrastructure/auth"
 	"net/http"
 )
 

@@ -3,7 +3,7 @@ package integration
 import (
 	"fmt"
 	"log"
-	"nc-two/domain"
+	"nctwo/backend/domain"
 	"os"
 
 	"github.com/jinzhu/gorm"

@@ -2,8 +2,8 @@ package persistence
 
 import (
 	"fmt"
-	"nc-two/adapters"
-	"nc-two/domain"
+	"nctwo/backend/adapters"
+	"nctwo/backend/domain"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"

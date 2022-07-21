@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"nc-two/handlers"
-	"nc-two/utils/mock"
+	"nctwo/backend/handlers"
+	"nctwo/backend/utils/mock"
 )
 
 var (

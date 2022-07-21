@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"nc-two/handlers"
-	"nc-two/infrastructure/auth"
-	"nc-two/infrastructure/persistence"
+	"nctwo/backend/handlers"
+	"nctwo/backend/infrastructure/auth"
+	"nctwo/backend/infrastructure/persistence"
 	"os"
 
 	"github.com/gin-gonic/gin"

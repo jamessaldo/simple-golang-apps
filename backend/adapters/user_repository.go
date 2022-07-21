@@ -2,8 +2,8 @@ package adapters
 
 import (
 	"errors"
-	"nc-two/domain"
-	"nc-two/infrastructure/security"
+	"nctwo/backend/domain"
+	"nctwo/backend/infrastructure/security"
 	"strings"
 
 	"github.com/jinzhu/gorm"

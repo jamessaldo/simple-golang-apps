@@ -1,8 +1,8 @@
 package integration
 
 import (
-	"nc-two/adapters"
-	"nc-two/domain"
+	"nctwo/backend/adapters"
+	"nctwo/backend/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
