@@ -40,13 +40,14 @@ func LocalDatabase() (*gorm.DB, error) {
 		log.Println("CONNECTED TO: ", dbdriver)
 	}
 
-	err = conn.DropTableIfExists(&domain.User{}, &domain.Post{}).Error
+	err = conn.DropTableIfExists(&domain.User{}, &domain.Post{}, &domain.Comment{}).Error
 	if err != nil {
 		return nil, err
 	}
 	err = conn.Debug().AutoMigrate(
 		domain.User{},
 		domain.Post{},
+		domain.Comment{},
 	).Error
 	if err != nil {
 		return nil, err
@@ -57,9 +58,10 @@ func LocalDatabase() (*gorm.DB, error) {
 func seedUser(db *gorm.DB) (*domain.User, error) {
 	user := &domain.User{
 		ID:        1,
-		FirstName: "vic",
-		LastName:  "stev",
-		Email:     "steven@example.com",
+		FirstName: "james",
+		LastName:  "saldo",
+		Username:  "jamessaldo",
+		Email:     "jamessaldo@example.com",
 		Password:  "password",
 		DeletedAt: nil,
 	}
@@ -74,9 +76,10 @@ func seedUsers(db *gorm.DB) ([]domain.User, error) {
 	users := []domain.User{
 		{
 			ID:        1,
-			FirstName: "vic",
-			LastName:  "stev",
-			Email:     "steven@example.com",
+			FirstName: "james",
+			LastName:  "saldo",
+			Username:  "jamessaldo",
+			Email:     "jamessaldo@example.com",
 			Password:  "password",
 			DeletedAt: nil,
 		},
@@ -84,6 +87,7 @@ func seedUsers(db *gorm.DB) ([]domain.User, error) {
 			ID:        2,
 			FirstName: "kobe",
 			LastName:  "bryant",
+			Username:  "kobebryant",
 			Email:     "kobe@example.com",
 			Password:  "password",
 			DeletedAt: nil,
@@ -100,7 +104,6 @@ func seedUsers(db *gorm.DB) ([]domain.User, error) {
 
 func seedPost(db *gorm.DB) (*domain.Post, error) {
 	post := &domain.Post{
-		ID:          1,
 		Title:       "post title",
 		Description: "post desc",
 		UserID:      1,
@@ -115,13 +118,11 @@ func seedPost(db *gorm.DB) (*domain.Post, error) {
 func seedPosts(db *gorm.DB) ([]domain.Post, error) {
 	posts := []domain.Post{
 		{
-			ID:          1,
 			Title:       "first post",
 			Description: "first desc",
 			UserID:      1,
 		},
 		{
-			ID:          2,
 			Title:       "second post",
 			Description: "second desc",
 			UserID:      1,
@@ -134,4 +135,39 @@ func seedPosts(db *gorm.DB) ([]domain.Post, error) {
 		}
 	}
 	return posts, nil
+}
+
+func seedComment(db *gorm.DB) (*domain.Comment, error) {
+	comment := &domain.Comment{
+		Content: "comment content",
+		UserID:  1,
+		PostID:  1,
+	}
+	err := db.Create(&comment).Error
+	if err != nil {
+		return nil, err
+	}
+	return comment, nil
+}
+
+func seedComments(db *gorm.DB) ([]domain.Comment, error) {
+	comments := []domain.Comment{
+		{
+			Content: "first content",
+			UserID:  1,
+			PostID:  1,
+		},
+		{
+			Content: "second content",
+			UserID:  1,
+			PostID:  1,
+		},
+	}
+	for _, v := range comments {
+		err := db.Create(&v).Error
+		if err != nil {
+			return nil, err
+		}
+	}
+	return comments, nil
 }

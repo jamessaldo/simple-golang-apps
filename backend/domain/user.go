@@ -14,6 +14,7 @@ type User struct {
 	FirstName string     `gorm:"size:100;not null;" json:"first_name"`
 	LastName  string     `gorm:"size:100;not null;" json:"last_name"`
 	Email     string     `gorm:"size:100;not null;unique" json:"email"`
+	Username  string     `gorm:"size:100;not null;unique" json:"username"`
 	Password  string     `gorm:"size:100;not null;" json:"password"`
 	CreatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
@@ -24,6 +25,7 @@ type PublicUser struct {
 	ID        uint64 `gorm:"primary_key;auto_increment" json:"id"`
 	FirstName string `gorm:"size:100;not null;" json:"first_name"`
 	LastName  string `gorm:"size:100;not null;" json:"last_name"`
+	Username  string `gorm:"size:100;not null;unique" json:"username"`
 }
 
 //BeforeSave is a gorm hook
@@ -53,6 +55,7 @@ func (u *User) PublicUser() *PublicUser {
 		ID:        u.ID,
 		FirstName: u.FirstName,
 		LastName:  u.LastName,
+		Username:  u.Username,
 	}
 }
 
@@ -60,6 +63,7 @@ func (u *User) Prepare() {
 	u.FirstName = html.EscapeString(strings.TrimSpace(u.FirstName))
 	u.LastName = html.EscapeString(strings.TrimSpace(u.LastName))
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
+	u.Username = html.EscapeString(strings.TrimSpace(u.Username))
 	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
 }
@@ -112,6 +116,9 @@ func (u *User) Validate(action string) map[string]string {
 		}
 		if u.Password != "" && len(u.Password) < 6 {
 			errorMessages["invalid_password"] = "password should be at least 6 characters"
+		}
+		if u.Username == "" {
+			errorMessages["username_required"] = "username is required"
 		}
 		if u.Email == "" {
 			errorMessages["email_required"] = "email is required"

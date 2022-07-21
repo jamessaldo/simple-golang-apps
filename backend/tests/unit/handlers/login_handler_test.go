@@ -30,7 +30,7 @@ func Test_Login_Invalid_Data(t *testing.T) {
 		},
 		{
 			//empty password
-			inputJSON:  `{"email": "steven@example.com","password": ""}`,
+			inputJSON:  `{"email": "jamessaldo@example.com","password": ""}`,
 			statusCode: 422,
 		},
 		{
@@ -76,8 +76,8 @@ func Test_Login_Success(t *testing.T) {
 	userApp.GetUserByEmailAndPasswordFn = func(*domain.User) (*domain.User, map[string]string) {
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	fakeToken.CreateTokenFn = func(userid uint64) (*auth.TokenDetails, error) {
@@ -94,7 +94,7 @@ func Test_Login_Success(t *testing.T) {
 		return nil
 	}
 
-	inputJSON := `{"email": "steven@example.com","password": "password"}`
+	inputJSON := `{"email": "jamessaldo@example.com","password": "password"}`
 	r := gin.Default()
 	r.POST("/login", handler.Login)
 	req, err := http.NewRequest(http.MethodPost, "/login", bytes.NewBufferString(inputJSON))
@@ -115,8 +115,8 @@ func Test_Login_Success(t *testing.T) {
 	assert.Equal(t, rr.Code, http.StatusOK)
 	assert.EqualValues(t, response["access_token"], "this-is-the-access-token")
 	assert.EqualValues(t, response["refresh_token"], "this-is-the-refresh-token")
-	assert.EqualValues(t, response["first_name"], "victor")
-	assert.EqualValues(t, response["last_name"], "steven")
+	assert.EqualValues(t, response["first_name"], "james")
+	assert.EqualValues(t, response["last_name"], "saldo")
 }
 
 func TestLogout_Success(t *testing.T) {

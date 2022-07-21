@@ -46,7 +46,7 @@ func main() {
 
 	tk := auth.NewToken()
 
-	handler := handlers.NewHandler(services.Post, services.User, redisService.Auth, tk)
+	handler := handlers.NewHandler(services.Post, services.Comment, services.User, redisService.Auth, tk)
 
 	r := gin.Default()
 

@@ -119,12 +119,12 @@ func TestSaverPost_Success(t *testing.T) {
 		//remember we are running sensitive info such as email and password
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	//Mocking The Post return from db
-	postApp.SavePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
+	PostApp.SavePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -248,7 +248,7 @@ func TestGetAllPost_Success(t *testing.T) {
 	//application.PostApp = &fakePostApp{} //make it possible to change real method with fake
 
 	//Return Post to check for, with our mock
-	postApp.GetAllPostFn = func() ([]domain.Post, error) {
+	PostApp.GetAllPostFn = func() ([]domain.Post, error) {
 		return []domain.Post{
 			{
 				ID:          1,
@@ -288,12 +288,12 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 		//remember we are running sensitive info such as email and password
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -324,8 +324,8 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 	assert.EqualValues(t, post["title"], "Post title")
 	assert.EqualValues(t, post["description"], "Post description")
 
-	assert.EqualValues(t, creator["first_name"], "victor")
-	assert.EqualValues(t, creator["last_name"], "steven")
+	assert.EqualValues(t, creator["first_name"], "james")
+	assert.EqualValues(t, creator["last_name"], "saldo")
 }
 
 func TestUpdatePost_Success_With_File(t *testing.T) {
@@ -345,12 +345,12 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 		//remember we are running sensitive info such as email and password
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -359,7 +359,7 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 		}, nil
 	}
 	//Mocking The Post return from db
-	postApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
+	PostApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -441,12 +441,12 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 		//remember we are running sensitive info such as email and password
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -455,7 +455,7 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 		}, nil
 	}
 	//Mocking The Post return from db
-	postApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
+	PostApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -620,7 +620,7 @@ func TestDeletePost_Success(t *testing.T) {
 		return 1, nil
 	}
 	//Return Post to check for, with our mock
-	postApp.GetPostFn = func(uint64) (*domain.Post, error) {
+	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
 			UserID:      1,
@@ -632,12 +632,12 @@ func TestDeletePost_Success(t *testing.T) {
 		//remember we are running sensitive info such as email and password
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	//The deleted post mock:
-	postApp.DeletePostFn = func(uint64) error {
+	PostApp.DeletePostFn = func(uint64) error {
 		return nil
 	}
 

@@ -20,17 +20,18 @@ func TestSaveUser_Success(t *testing.T) {
 	userApp.SaveUserFn = func(*domain.User) (*domain.User, map[string]string) {
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 
 	r := gin.Default()
 	r.POST("/users", handler.SaveUser)
 	inputJSON := `{
-		"first_name": "victor",
-		"last_name": "steven",
-		"email": "steven@example.com",
+		"first_name": "james",
+		"last_name": "saldo",
+		"username": "jamessaldo",
+		"email": "jamessaldo@example.com",
 		"password": "password"
 	}`
 	req, err := http.NewRequest(http.MethodPost, "/users", bytes.NewBufferString(inputJSON))
@@ -45,8 +46,8 @@ func TestSaveUser_Success(t *testing.T) {
 	err = json.Unmarshal(rr.Body.Bytes(), &user)
 
 	assert.Equal(t, rr.Code, 201)
-	assert.EqualValues(t, user.FirstName, "victor")
-	assert.EqualValues(t, user.LastName, "steven")
+	assert.EqualValues(t, user.FirstName, "james")
+	assert.EqualValues(t, user.LastName, "saldo")
 }
 
 //We dont need to mock the application layer, because we won't get there. So we will use table test to cover all validation errors
@@ -56,19 +57,19 @@ func Test_SaveUser_Invalidating_Data(t *testing.T) {
 		statusCode int
 	}{
 		{
-			inputJSON:  `{"first_name": "", "last_name": "steven","email": "steven@example.com","password": "password"}`,
+			inputJSON:  `{"first_name": "", "last_name": "saldo", "username": "jamessaldo","email": "jamessaldo@example.com","password": "password"}`,
 			statusCode: 422,
 		},
 		{
-			inputJSON:  `{"first_name": "victor", "last_name": "","email": "steven@example.com","password": "password"}`,
+			inputJSON:  `{"first_name": "james", "last_name": "","email": "jamessaldo@example.com","password": "password"}`,
 			statusCode: 422,
 		},
 		{
-			inputJSON:  `{"first_name": "victor", "last_name": "steven","email": "","password": "password"}`,
+			inputJSON:  `{"first_name": "james", "last_name": "saldo", "username": "jamessaldo","email": "","password": "password"}`,
 			statusCode: 422,
 		},
 		{
-			inputJSON:  `{"first_name": "victor", "last_name": "steven","email": "steven@example.com","password": ""}`,
+			inputJSON:  `{"first_name": "james", "last_name": "saldo", "username": "jamessaldo","email": "jamessaldo@example.com","password": ""}`,
 			statusCode: 422,
 		},
 		{
@@ -78,7 +79,7 @@ func Test_SaveUser_Invalidating_Data(t *testing.T) {
 		},
 		{
 			//When instead a string an integer is supplied, When attempting to unmarshal input to the user struct, it will fail
-			inputJSON:  `{"first_name": 1234, "last_name": "steven","email": "steven@example.com","password": "password"}`,
+			inputJSON:  `{"first_name": 1234, "last_name": "saldo", "username": "jamessaldo","email": "jamessaldo@example.com","password": "password"}`,
 			statusCode: 422,
 		},
 	}
@@ -135,9 +136,10 @@ func TestSaveUser_DB_Error(t *testing.T) {
 	r := gin.Default()
 	r.POST("/users", handler.SaveUser)
 	inputJSON := `{
-		"first_name": "victor",
-		"last_name": "steven",
-		"email": "steven@example.com",
+		"first_name": "james",
+		"last_name": "saldo",
+		"username": "jamessaldo",
+		"email": "jamessaldo@example.com",
 		"password": "password"
 	}`
 	req, err := http.NewRequest(http.MethodPost, "/users", bytes.NewBufferString(inputJSON))
@@ -165,8 +167,8 @@ func TestGetUsers_Success(t *testing.T) {
 		return []domain.User{
 			{
 				ID:        1,
-				FirstName: "victor",
-				LastName:  "steven",
+				FirstName: "james",
+				LastName:  "saldo",
 			},
 			{
 				ID:        2,
@@ -202,8 +204,8 @@ func TestGetUser_Success(t *testing.T) {
 		//remember we are running sensitive info such as email and password
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
+			FirstName: "james",
+			LastName:  "saldo",
 		}, nil
 	}
 	r := gin.Default()
@@ -222,6 +224,6 @@ func TestGetUser_Success(t *testing.T) {
 	err = json.Unmarshal(rr.Body.Bytes(), &user)
 
 	assert.Equal(t, rr.Code, 200)
-	assert.EqualValues(t, user.FirstName, "victor")
-	assert.EqualValues(t, user.LastName, "steven")
+	assert.EqualValues(t, user.FirstName, "james")
+	assert.EqualValues(t, user.LastName, "saldo")
 }

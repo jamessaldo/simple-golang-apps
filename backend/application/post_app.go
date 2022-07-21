@@ -5,11 +5,11 @@ import (
 	"nc-two/domain"
 )
 
-type postApp struct {
+type PostApp struct {
 	fr adapters.PostRepository
 }
 
-var _ PostAppInterface = &postApp{}
+var _ PostAppInterface = &PostApp{}
 
 type PostAppInterface interface {
 	SavePost(*domain.Post) (*domain.Post, map[string]string)
@@ -19,22 +19,22 @@ type PostAppInterface interface {
 	DeletePost(uint64) error
 }
 
-func (f *postApp) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
-	return f.fr.SavePost(post)
+func (p *PostApp) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
+	return p.fr.SavePost(post)
 }
 
-func (f *postApp) GetAllPost() ([]domain.Post, error) {
-	return f.fr.GetAllPost()
+func (p *PostApp) GetAllPost() ([]domain.Post, error) {
+	return p.fr.GetAllPost()
 }
 
-func (f *postApp) GetPost(postId uint64) (*domain.Post, error) {
-	return f.fr.GetPost(postId)
+func (p *PostApp) GetPost(postId uint64) (*domain.Post, error) {
+	return p.fr.GetPost(postId)
 }
 
-func (f *postApp) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
-	return f.fr.UpdatePost(post)
+func (p *PostApp) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
+	return p.fr.UpdatePost(post)
 }
 
-func (f *postApp) DeletePost(postId uint64) error {
-	return f.fr.DeletePost(postId)
+func (p *PostApp) DeletePost(postId uint64) error {
+	return p.fr.DeletePost(postId)
 }

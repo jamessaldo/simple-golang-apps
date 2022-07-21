@@ -8,19 +8,21 @@ import (
 )
 
 type Handler struct {
-	postApp application.PostAppInterface
-	userApp application.UserAppInterface
-	tk      auth.TokenInterface
-	rd      auth.AuthInterface
+	PostApp    application.PostAppInterface
+	userApp    application.UserAppInterface
+	CommentApp application.CommentAppInterface
+	tk         auth.TokenInterface
+	rd         auth.AuthInterface
 }
 
 //Handler constructor
-func NewHandler(fApp application.PostAppInterface, uApp application.UserAppInterface, rd auth.AuthInterface, tk auth.TokenInterface) *Handler {
+func NewHandler(pApp application.PostAppInterface, cApp application.CommentAppInterface, uApp application.UserAppInterface, rd auth.AuthInterface, tk auth.TokenInterface) *Handler {
 	return &Handler{
-		postApp: fApp,
-		userApp: uApp,
-		rd:      rd,
-		tk:      tk,
+		PostApp:    pApp,
+		userApp:    uApp,
+		CommentApp: cApp,
+		rd:         rd,
+		tk:         tk,
 	}
 }
 

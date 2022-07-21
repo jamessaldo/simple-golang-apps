@@ -6,10 +6,11 @@ import (
 )
 
 var (
-	userApp   mock.UserAppInterface
-	postApp   mock.PostAppInterface
-	fakeAuth  mock.AuthInterface
-	fakeToken mock.TokenInterface
+	userApp    mock.UserAppInterface
+	PostApp    mock.PostAppInterface
+	CommentApp mock.CommentAppInterface
+	fakeAuth   mock.AuthInterface
+	fakeToken  mock.TokenInterface
 
-	handler = handlers.NewHandler(&postApp, &userApp, &fakeAuth, &fakeToken) //We use all mocked data here
+	handler = handlers.NewHandler(&PostApp, &CommentApp, &userApp, &fakeAuth, &fakeToken) //We use all mocked data here
 )

@@ -39,24 +39,24 @@ func TestSaveUser_Success(t *testing.T) {
 	saveUserRepo = func(user *domain.User) (*domain.User, map[string]string) {
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
-			Email:     "steven@example.com",
+			FirstName: "james",
+			LastName:  "saldo",
+			Email:     "jamessaldo@example.com",
 			Password:  "password",
 		}, nil
 	}
 	user := &domain.User{
 		ID:        1,
-		FirstName: "victor",
-		LastName:  "steven",
-		Email:     "steven@example.com",
+		FirstName: "james",
+		LastName:  "saldo",
+		Email:     "jamessaldo@example.com",
 		Password:  "password",
 	}
 	u, err := userRepoFake.SaveUser(user)
 	assert.Nil(t, err)
-	assert.EqualValues(t, u.FirstName, "victor")
-	assert.EqualValues(t, u.LastName, "steven")
-	assert.EqualValues(t, u.Email, "steven@example.com")
+	assert.EqualValues(t, u.FirstName, "james")
+	assert.EqualValues(t, u.LastName, "saldo")
+	assert.EqualValues(t, u.Email, "jamessaldo@example.com")
 }
 
 func TestGetUser_Success(t *testing.T) {
@@ -64,18 +64,18 @@ func TestGetUser_Success(t *testing.T) {
 	getUserRepo = func(userId uint64) (*domain.User, error) {
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
-			Email:     "steven@example.com",
+			FirstName: "james",
+			LastName:  "saldo",
+			Email:     "jamessaldo@example.com",
 			Password:  "password",
 		}, nil
 	}
 	userId := uint64(1)
 	u, err := userRepoFake.GetUser(userId)
 	assert.Nil(t, err)
-	assert.EqualValues(t, u.FirstName, "victor")
-	assert.EqualValues(t, u.LastName, "steven")
-	assert.EqualValues(t, u.Email, "steven@example.com")
+	assert.EqualValues(t, u.FirstName, "james")
+	assert.EqualValues(t, u.LastName, "saldo")
+	assert.EqualValues(t, u.Email, "jamessaldo@example.com")
 }
 
 func TestGetUsers_Success(t *testing.T) {
@@ -84,9 +84,9 @@ func TestGetUsers_Success(t *testing.T) {
 		return []domain.User{
 			{
 				ID:        1,
-				FirstName: "victor",
-				LastName:  "steven",
-				Email:     "steven@example.com",
+				FirstName: "james",
+				LastName:  "saldo",
+				Email:     "jamessaldo@example.com",
 				Password:  "password",
 			},
 			{
@@ -108,22 +108,22 @@ func TestGetUserByEmailAndPassword_Success(t *testing.T) {
 	getUserEmailAndPasswordRepo = func(user *domain.User) (*domain.User, map[string]string) {
 		return &domain.User{
 			ID:        1,
-			FirstName: "victor",
-			LastName:  "steven",
-			Email:     "steven@example.com",
+			FirstName: "james",
+			LastName:  "saldo",
+			Email:     "jamessaldo@example.com",
 			Password:  "password",
 		}, nil
 	}
 	user := &domain.User{
 		ID:        1,
-		FirstName: "victor",
-		LastName:  "steven",
-		Email:     "steven@example.com",
+		FirstName: "james",
+		LastName:  "saldo",
+		Email:     "jamessaldo@example.com",
 		Password:  "password",
 	}
 	u, err := userRepoFake.GetUserByEmailAndPassword(user)
 	assert.Nil(t, err)
-	assert.EqualValues(t, u.FirstName, "victor")
-	assert.EqualValues(t, u.LastName, "steven")
-	assert.EqualValues(t, u.Email, "steven@example.com")
+	assert.EqualValues(t, u.FirstName, "james")
+	assert.EqualValues(t, u.LastName, "saldo")
+	assert.EqualValues(t, u.Email, "jamessaldo@example.com")
 }

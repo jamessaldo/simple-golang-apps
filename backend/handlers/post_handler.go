@@ -56,7 +56,7 @@ func (handler *Handler) SavePost(c *gin.Context) {
 	post.Title = title
 	post.Description = description
 	// post.PostImage = uploadedFile
-	savedPost, saveErr := handler.postApp.SavePost(&post)
+	savedPost, saveErr := handler.PostApp.SavePost(&post)
 	if saveErr != nil {
 		c.JSON(http.StatusInternalServerError, saveErr)
 		return
@@ -107,7 +107,7 @@ func (handler *Handler) UpdatePost(c *gin.Context) {
 	}
 
 	//check if the post exist:
-	post, err := handler.postApp.GetPost(postId)
+	post, err := handler.PostApp.GetPost(postId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
 		return
@@ -122,7 +122,7 @@ func (handler *Handler) UpdatePost(c *gin.Context) {
 	post.Title = title
 	post.Description = description
 	post.UpdatedAt = time.Now()
-	updatedPost, dbUpdateErr := handler.postApp.UpdatePost(post)
+	updatedPost, dbUpdateErr := handler.PostApp.UpdatePost(post)
 	if dbUpdateErr != nil {
 		c.JSON(http.StatusInternalServerError, dbUpdateErr)
 		return
@@ -131,7 +131,7 @@ func (handler *Handler) UpdatePost(c *gin.Context) {
 }
 
 func (handler *Handler) GetAllPost(c *gin.Context) {
-	allpost, err := handler.postApp.GetAllPost()
+	allpost, err := handler.PostApp.GetAllPost()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
@@ -145,7 +145,7 @@ func (handler *Handler) GetPostAndCreator(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "invalid request")
 		return
 	}
-	post, err := handler.postApp.GetPost(postId)
+	post, err := handler.PostApp.GetPost(postId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
@@ -178,7 +178,7 @@ func (handler *Handler) DeletePost(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	err = handler.postApp.DeletePost(postId)
+	err = handler.PostApp.DeletePost(postId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return

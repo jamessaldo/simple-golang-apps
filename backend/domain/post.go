@@ -16,32 +16,32 @@ type Post struct {
 	DeletedAt   *time.Time `json:"deleted_at"`
 }
 
-func (f *Post) BeforeSave() {
-	f.Title = html.EscapeString(strings.TrimSpace(f.Title))
+func (p *Post) BeforeSave() {
+	p.Title = html.EscapeString(strings.TrimSpace(p.Title))
 }
 
-func (f *Post) Prepare() {
-	f.Title = html.EscapeString(strings.TrimSpace(f.Title))
-	f.CreatedAt = time.Now()
-	f.UpdatedAt = time.Now()
+func (p *Post) Prepare() {
+	p.Title = html.EscapeString(strings.TrimSpace(p.Title))
+	p.CreatedAt = time.Now()
+	p.UpdatedAt = time.Now()
 }
 
-func (f *Post) Validate(action string) map[string]string {
+func (p *Post) Validate(action string) map[string]string {
 	var errorMessages = make(map[string]string)
 
 	switch strings.ToLower(action) {
 	case "update":
-		if f.Title == "" || f.Title == "null" {
+		if p.Title == "" || p.Title == "null" {
 			errorMessages["title_required"] = "title is required"
 		}
-		if f.Description == "" || f.Description == "null" {
+		if p.Description == "" || p.Description == "null" {
 			errorMessages["desc_required"] = "description is required"
 		}
 	default:
-		if f.Title == "" || f.Title == "null" {
+		if p.Title == "" || p.Title == "null" {
 			errorMessages["title_required"] = "title is required"
 		}
-		if f.Description == "" || f.Description == "null" {
+		if p.Description == "" || p.Description == "null" {
 			errorMessages["desc_required"] = "description is required"
 		}
 	}

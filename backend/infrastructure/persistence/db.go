@@ -10,9 +10,10 @@ import (
 )
 
 type Repositories struct {
-	User adapters.UserRepository
-	Post adapters.PostRepository
-	db   *gorm.DB
+	User    adapters.UserRepository
+	Post    adapters.PostRepository
+	Comment adapters.CommentRepository
+	db      *gorm.DB
 }
 
 func NewRepositories(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) (*Repositories, error) {
@@ -24,9 +25,10 @@ func NewRepositories(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string
 	db.LogMode(true)
 
 	return &Repositories{
-		User: adapters.NewUserRepository(db),
-		Post: adapters.NewPostRepository(db),
-		db:   db,
+		User:    adapters.NewUserRepository(db),
+		Post:    adapters.NewPostRepository(db),
+		Comment: adapters.NewCommentRepository(db),
+		db:      db,
 	}, nil
 }
 
@@ -37,5 +39,5 @@ func (s *Repositories) Close() error {
 
 //This migrate all tables
 func (s *Repositories) Automigrate() error {
-	return s.db.AutoMigrate(&domain.User{}, &domain.Post{}).Error
+	return s.db.AutoMigrate(&domain.User{}, &domain.Post{}, &domain.Comment{}).Error
 }

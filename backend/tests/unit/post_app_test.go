@@ -55,11 +55,11 @@ func TestSavePost_Success(t *testing.T) {
 		Description: "post description",
 		UserID:      1,
 	}
-	f, err := postRepoFake.SavePost(post)
+	p, err := postRepoFake.SavePost(post)
 	assert.Nil(t, err)
-	assert.EqualValues(t, f.Title, "post title")
-	assert.EqualValues(t, f.Description, "post description")
-	assert.EqualValues(t, f.UserID, 1)
+	assert.EqualValues(t, p.Title, "post title")
+	assert.EqualValues(t, p.Description, "post description")
+	assert.EqualValues(t, p.UserID, 1)
 }
 
 func TestGetPost_Success(t *testing.T) {
@@ -73,11 +73,11 @@ func TestGetPost_Success(t *testing.T) {
 		}, nil
 	}
 	postId := uint64(1)
-	f, err := postRepoFake.GetPost(postId)
+	p, err := postRepoFake.GetPost(postId)
 	assert.Nil(t, err)
-	assert.EqualValues(t, f.Title, "post title")
-	assert.EqualValues(t, f.Description, "post description")
-	assert.EqualValues(t, f.UserID, 1)
+	assert.EqualValues(t, p.Title, "post title")
+	assert.EqualValues(t, p.Description, "post description")
+	assert.EqualValues(t, p.UserID, 1)
 }
 
 func TestAllPost_Success(t *testing.T) {
@@ -119,11 +119,11 @@ func TestUpdatePost_Success(t *testing.T) {
 		Description: "post description update",
 		UserID:      1,
 	}
-	f, err := postRepoFake.UpdatePost(post)
+	p, err := postRepoFake.UpdatePost(post)
 	assert.Nil(t, err)
-	assert.EqualValues(t, f.Title, "post title update")
-	assert.EqualValues(t, f.Description, "post description update")
-	assert.EqualValues(t, f.UserID, 1)
+	assert.EqualValues(t, p.Title, "post title update")
+	assert.EqualValues(t, p.Description, "post description update")
+	assert.EqualValues(t, p.UserID, 1)
 }
 
 func TestDeletePost_Success(t *testing.T) {

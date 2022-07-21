@@ -44,20 +44,45 @@ type PostAppInterface struct {
 	DeletePostFn func(uint64) error
 }
 
-func (f *PostAppInterface) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
-	return f.SavePostFn(post)
+func (p *PostAppInterface) SavePost(post *domain.Post) (*domain.Post, map[string]string) {
+	return p.SavePostFn(post)
 }
-func (f *PostAppInterface) GetAllPost() ([]domain.Post, error) {
-	return f.GetAllPostFn()
+func (p *PostAppInterface) GetAllPost() ([]domain.Post, error) {
+	return p.GetAllPostFn()
 }
-func (f *PostAppInterface) GetPost(postId uint64) (*domain.Post, error) {
-	return f.GetPostFn(postId)
+func (p *PostAppInterface) GetPost(postId uint64) (*domain.Post, error) {
+	return p.GetPostFn(postId)
 }
-func (f *PostAppInterface) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
-	return f.UpdatePostFn(post)
+func (p *PostAppInterface) UpdatePost(post *domain.Post) (*domain.Post, map[string]string) {
+	return p.UpdatePostFn(post)
 }
-func (f *PostAppInterface) DeletePost(postId uint64) error {
-	return f.DeletePostFn(postId)
+func (p *PostAppInterface) DeletePost(postId uint64) error {
+	return p.DeletePostFn(postId)
+}
+
+//CommentAppInterface is a mock post app interface
+type CommentAppInterface struct {
+	SaveCommentFn   func(*domain.Comment) (*domain.Comment, map[string]string)
+	GetAllCommentFn func() ([]domain.Comment, error)
+	GetCommentFn    func(uint64) (*domain.Comment, error)
+	UpdateCommentFn func(*domain.Comment) (*domain.Comment, map[string]string)
+	DeleteCommentFn func(uint64) error
+}
+
+func (c *CommentAppInterface) SaveComment(post *domain.Comment) (*domain.Comment, map[string]string) {
+	return c.SaveCommentFn(post)
+}
+func (c *CommentAppInterface) GetAllComment() ([]domain.Comment, error) {
+	return c.GetAllCommentFn()
+}
+func (c *CommentAppInterface) GetComment(postId uint64) (*domain.Comment, error) {
+	return c.GetCommentFn(postId)
+}
+func (c *CommentAppInterface) UpdateComment(post *domain.Comment) (*domain.Comment, map[string]string) {
+	return c.UpdateCommentFn(post)
+}
+func (c *CommentAppInterface) DeleteComment(postId uint64) error {
+	return c.DeleteCommentFn(postId)
 }
 
 //AuthInterface is a mock auth interface
@@ -68,17 +93,17 @@ type AuthInterface struct {
 	DeleteTokensFn  func(*auth.AccessDetails) error
 }
 
-func (f *AuthInterface) DeleteRefresh(refreshUuid string) error {
-	return f.DeleteRefreshFn(refreshUuid)
+func (a *AuthInterface) DeleteRefresh(refreshUuid string) error {
+	return a.DeleteRefreshFn(refreshUuid)
 }
-func (f *AuthInterface) DeleteTokens(authD *auth.AccessDetails) error {
-	return f.DeleteTokensFn(authD)
+func (a *AuthInterface) DeleteTokens(authD *auth.AccessDetails) error {
+	return a.DeleteTokensFn(authD)
 }
-func (f *AuthInterface) FetchAuth(uuid string) (uint64, error) {
-	return f.FetchAuthFn(uuid)
+func (a *AuthInterface) FetchAuth(uuid string) (uint64, error) {
+	return a.FetchAuthFn(uuid)
 }
-func (f *AuthInterface) CreateAuth(userId uint64, authD *auth.TokenDetails) error {
-	return f.CreateAuthFn(userId, authD)
+func (a *AuthInterface) CreateAuth(userId uint64, authD *auth.TokenDetails) error {
+	return a.CreateAuthFn(userId, authD)
 }
 
 //TokenInterface is a mock token interface
@@ -87,11 +112,11 @@ type TokenInterface struct {
 	ExtractTokenMetadataFn func(*http.Request) (*auth.AccessDetails, error)
 }
 
-func (f *TokenInterface) CreateToken(userid uint64) (*auth.TokenDetails, error) {
-	return f.CreateTokenFn(userid)
+func (t *TokenInterface) CreateToken(userid uint64) (*auth.TokenDetails, error) {
+	return t.CreateTokenFn(userid)
 }
-func (f *TokenInterface) ExtractTokenMetadata(r *http.Request) (*auth.AccessDetails, error) {
-	return f.ExtractTokenMetadataFn(r)
+func (t *TokenInterface) ExtractTokenMetadata(r *http.Request) (*auth.AccessDetails, error) {
+	return t.ExtractTokenMetadataFn(r)
 }
 
 type UploadFileInterface struct {
