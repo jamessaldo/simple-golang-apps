@@ -4,6 +4,7 @@ import (
 	"mime/multipart"
 	"nctwo/backend/domain"
 	"nctwo/backend/infrastructure/auth"
+	"nctwo/backend/infrastructure/worker"
 	"net/http"
 )
 
@@ -125,4 +126,13 @@ type UploadFileInterface struct {
 
 func (up *UploadFileInterface) UploadFile(file *multipart.FileHeader) (string, error) {
 	return up.UploadFileFn(file)
+}
+
+//WorkerInterface is a mock worker interface
+type WorkerInterface struct {
+	SendEmailFn func(payload *worker.Payload) error
+}
+
+func (wk *WorkerInterface) SendEmail(payload *worker.Payload) error {
+	return wk.SendEmailFn(payload)
 }

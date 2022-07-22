@@ -13,7 +13,7 @@ import (
 )
 
 type BodylinkEmail struct {
-	URL string
+	NAME string
 }
 
 func SendEmail(to string, subject string, data interface{}, templateFile string) error {
@@ -68,7 +68,7 @@ func HandleWelcomeEmailTask(c context.Context, t *asynq.Task) error {
 	}
 
 	templateData := BodylinkEmail{
-		URL: "https://detik.id/",
+		NAME: data["name"].(string),
 	}
 	to := "jamessaldo19@gmail.com"
 	go SendEmailVerification(to, templateData)

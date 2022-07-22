@@ -2,15 +2,15 @@ package auth
 
 import (
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/twinj/uuid"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"time"
-)
 
+	"github.com/dgrijalva/jwt-go"
+	"github.com/twinj/uuid"
+)
 
 type Token struct{}
 

@@ -5,9 +5,11 @@ import (
 	"nctwo/backend/handlers"
 	"nctwo/backend/infrastructure/auth"
 	"nctwo/backend/infrastructure/persistence"
+	"nctwo/backend/infrastructure/worker"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hibiken/asynq"
 	"github.com/joho/godotenv"
 )
 
@@ -44,9 +46,23 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Create a new Redis connection for the client.
+	redisConnection := asynq.RedisClientOpt{
+		Addr: "localhost:6379", // Redis server address
+	}
+
+	// Create a new Asynq client.
+	client := asynq.NewClient(redisConnection)
+	defer client.Close()
+
+	workerService := worker.NewWorker(client)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	tk := auth.NewToken()
 
-	handler := handlers.NewHandler(services.Post, services.Comment, services.User, redisService.Auth, tk)
+	handler := handlers.NewHandler(services.Post, services.Comment, services.User, redisService.Auth, tk, workerService)
 
 	r := gin.Default()
 

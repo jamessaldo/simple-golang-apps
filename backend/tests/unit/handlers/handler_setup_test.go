@@ -11,6 +11,7 @@ var (
 	CommentApp mock.CommentAppInterface
 	fakeAuth   mock.AuthInterface
 	fakeToken  mock.TokenInterface
+	fakeWorker mock.WorkerInterface
 
-	handler = handlers.NewHandler(&PostApp, &CommentApp, &userApp, &fakeAuth, &fakeToken) //We use all mocked data here
+	handler = handlers.NewHandler(&PostApp, &CommentApp, &userApp, &fakeAuth, &fakeToken, &fakeWorker) //We use all mocked data here
 )

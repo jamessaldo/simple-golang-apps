@@ -9,6 +9,16 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+const (
+	// TypeWelcomeEmail is a name of the task type
+	// for sending a welcome email.
+	TypeWelcomeEmail = "email:welcome"
+
+	// TypeReminderEmail is a name of the task type
+	// for sending a reminder email.
+	TypeReminderEmail = "email:reminder"
+)
+
 func main() {
 	runtime.GOMAXPROCS(2)
 
@@ -34,13 +44,13 @@ func main() {
 
 	// Define a task handler for the welcome email task.
 	mux.HandleFunc(
-		tasks.TypeWelcomeEmail,       // task type
+		TypeWelcomeEmail,             // task type
 		tasks.HandleWelcomeEmailTask, // handler function
 	)
 
 	// Define a task handler for the reminder email task.
 	mux.HandleFunc(
-		tasks.TypeReminderEmail,       // task type
+		TypeReminderEmail,             // task type
 		tasks.HandleReminderEmailTask, // handler function
 	)
 

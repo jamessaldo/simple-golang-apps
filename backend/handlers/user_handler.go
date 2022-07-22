@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"nctwo/backend/domain"
+	"nctwo/backend/infrastructure/worker"
 	"net/http"
 	"strconv"
 
@@ -26,6 +27,10 @@ func (handler *Handler) SaveUser(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 		return
+	}
+	errSendMail := handler.wk.SendEmail(&worker.Payload{Name: newUser.FirstName})
+	if errSendMail != nil {
+		c.JSON(http.StatusInternalServerError, errSendMail)
 	}
 	c.JSON(http.StatusCreated, newUser.PublicUser())
 }

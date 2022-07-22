@@ -1,4 +1,4 @@
-package tasks
+package worker
 
 import (
 	"encoding/json"
@@ -17,11 +17,15 @@ const (
 	TypeReminderEmail = "email:reminder"
 )
 
+type Payload struct {
+	Name string
+}
+
 // NewWelcomeEmailTask task payload for a new welcome email.
-func NewWelcomeEmailTask(id int) *asynq.Task {
+func NewWelcomeEmailTask(data *Payload) *asynq.Task {
 	// Specify task payload.
 	payload := map[string]interface{}{
-		"user_id": id, // set user ID
+		"name": data.Name, // set user ID
 	}
 
 	b, err := json.Marshal(payload)
