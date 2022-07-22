@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"nctwo/backend/domain"
+	"nctwo/backend/infrastructure/worker"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -23,6 +24,10 @@ func TestSaveUser_Success(t *testing.T) {
 			FirstName: "james",
 			LastName:  "saldo",
 		}, nil
+	}
+
+	fakeWorker.SendEmailFn = func(payload *worker.Payload) error {
+		return nil
 	}
 
 	r := gin.Default()

@@ -23,7 +23,7 @@ func NewWorker(client *asynq.Client) *AsynqClient {
 //Enqueue task to send email
 func (ac *AsynqClient) SendEmail(payload *Payload) error {
 	// Define tasks.
-	task := NewWelcomeEmailTask(payload)
+	task := NewEmailTask(payload)
 
 	// Process the task immediately in critical queue.
 	if _, err := ac.client.Enqueue(
@@ -31,6 +31,21 @@ func (ac *AsynqClient) SendEmail(payload *Payload) error {
 		asynq.Queue("critical"), // set queue for task
 	); err != nil {
 		log.Fatal(err)
+		return err
 	}
 	return nil
 }
+
+// 	delay := 10 * time.Second
+
+// 	// Define tasks.
+// 	task2 := tasks.NewReminderEmailTask(userID, time.Now().Add(delay))
+
+// 	// Process the task 2 minutes later in low queue.
+// 	if _, err := client.Enqueue(
+// 		task2,                  // task payload
+// 		asynq.Queue("low"),     // set queue for task
+// 		asynq.ProcessIn(delay), // set time to process task
+// 	); err != nil {
+// 		log.Fatal(err)
+// 	}

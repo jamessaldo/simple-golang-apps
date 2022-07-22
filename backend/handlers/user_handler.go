@@ -28,7 +28,8 @@ func (handler *Handler) SaveUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	errSendMail := handler.wk.SendEmail(&worker.Payload{Name: newUser.FirstName})
+
+	errSendMail := handler.wk.SendEmail(&worker.Payload{UserName: newUser.FullName(), TemplateName: "welcome.html", To: newUser.Email})
 	if errSendMail != nil {
 		c.JSON(http.StatusInternalServerError, errSendMail)
 	}

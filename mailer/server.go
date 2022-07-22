@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	// TypeWelcomeEmail is a name of the task type
-	// for sending a welcome email.
-	TypeWelcomeEmail = "email:welcome"
+	// TypeEmailTask is a name of the task type
+	// for sending an email.
+	TypeEmailTask = "email:task"
 
-	// TypeReminderEmail is a name of the task type
-	// for sending a reminder email.
-	TypeReminderEmail = "email:reminder"
+	// TypeDelayedEmail is a name of the task type
+	// for sending a delayed email.
+	TypeDelayedEmail = "email:delayed"
 )
 
 func main() {
@@ -42,16 +42,16 @@ func main() {
 	// Create a new task's mux instance.
 	mux := asynq.NewServeMux()
 
-	// Define a task handler for the welcome email task.
+	// Define a task handler for the email task.
 	mux.HandleFunc(
-		TypeWelcomeEmail,             // task type
-		tasks.HandleWelcomeEmailTask, // handler function
+		TypeEmailTask,         // task type
+		tasks.HandleEmailTask, // handler function
 	)
 
-	// Define a task handler for the reminder email task.
+	// Define a task handler for the delayed email task.
 	mux.HandleFunc(
-		TypeReminderEmail,             // task type
-		tasks.HandleReminderEmailTask, // handler function
+		TypeDelayedEmail,             // task type
+		tasks.HandleDelayedEmailTask, // handler function
 	)
 
 	// Run worker server.

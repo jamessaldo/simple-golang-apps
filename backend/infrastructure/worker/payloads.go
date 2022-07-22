@@ -8,37 +8,36 @@ import (
 )
 
 const (
-	// TypeWelcomeEmail is a name of the task type
-	// for sending a welcome email.
-	TypeWelcomeEmail = "email:welcome"
+	// TypeEmailTask is a name of the task type
+	// for sending an email.
+	TypeEmailTask = "email:task"
 
-	// TypeReminderEmail is a name of the task type
-	// for sending a reminder email.
-	TypeReminderEmail = "email:reminder"
+	// TypeDelayedEmail is a name of the task type
+	// for sending a delayed email.
+	TypeDelayedEmail = "email:delayed"
 )
 
 type Payload struct {
-	Name string
+	UserName     string
+	TemplateName string
+	To           string
 }
 
-// NewWelcomeEmailTask task payload for a new welcome email.
-func NewWelcomeEmailTask(data *Payload) *asynq.Task {
+// NewEmailTask task payload for a new email.
+func NewEmailTask(data *Payload) *asynq.Task {
 	// Specify task payload.
-	payload := map[string]interface{}{
-		"name": data.Name, // set user ID
-	}
 
-	b, err := json.Marshal(payload)
+	b, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
 
 	// Return a new task with given type and payload.
-	return asynq.NewTask(TypeWelcomeEmail, b)
+	return asynq.NewTask(TypeEmailTask, b)
 }
 
-// NewReminderEmailTask task payload for a reminder email.
-func NewReminderEmailTask(id int, ts time.Time) *asynq.Task {
+// NewDelayedEmailTask task payload for a delayed email.
+func NewDelayedEmailTask(id int, ts time.Time) *asynq.Task {
 	// Specify task payload.
 	payload := map[string]interface{}{
 		"user_id": id,          // set user ID
@@ -51,5 +50,5 @@ func NewReminderEmailTask(id int, ts time.Time) *asynq.Task {
 	}
 
 	// Return a new task with given type and payload.
-	return asynq.NewTask(TypeReminderEmail, b)
+	return asynq.NewTask(TypeDelayedEmail, b)
 }

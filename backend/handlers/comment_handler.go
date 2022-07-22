@@ -63,7 +63,6 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 	comment.Content = content
 	comment.PostID = postId
 	// comment.CommentImage = uploadedFile
-	fmt.Println("tak cobek cobek", comment, handler, handler.CommentApp)
 	savedComment, saveErr := handler.CommentApp.SaveComment(&comment)
 	if saveErr != nil {
 		c.JSON(http.StatusInternalServerError, saveErr)

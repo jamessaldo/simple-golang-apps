@@ -164,8 +164,6 @@ func TestSaverComment_Success(t *testing.T) {
 
 	tokenString := fmt.Sprintf("Bearer %v", token)
 
-	fmt.Println("request bos", requestBody.String())
-
 	req, err := http.NewRequest(http.MethodPost, "/comment", &requestBody)
 	if err != nil {
 		t.Errorf("this is the error: %v\n", err)

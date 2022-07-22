@@ -191,7 +191,7 @@ func TestRefresh_Success(t *testing.T) {
 	rr := httptest.NewRecorder()
 	r.ServeHTTP(rr, req)
 
-	fmt.Println("the response: ", string(rr.Body.Bytes()))
+	fmt.Println("The response: ", string(rr.Body.Bytes()))
 
 	tokens := make(map[string]string)
 	err = json.Unmarshal(rr.Body.Bytes(), &tokens)

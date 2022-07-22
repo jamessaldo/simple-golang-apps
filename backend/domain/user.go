@@ -131,3 +131,7 @@ func (u *User) Validate(action string) map[string]string {
 	}
 	return errorMessages
 }
+
+func (u *User) FullName() string {
+	return u.FirstName + " " + u.LastName
+}

@@ -12,19 +12,19 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-type BodylinkEmail struct {
-	NAME string
+type Payload struct {
+	UserName     string
+	TemplateName string
+	To           string
 }
 
 func SendEmail(to string, subject string, data interface{}, templateFile string) error {
 	result, _ := ParseTemplate(fmt.Sprintf("%s%s", "./templates/", templateFile), data)
 	m := gomail.NewMessage()
-	m.SetHeader("From", "rizkysr19@zohomail.com")
+	m.SetHeader("From", "Conversa Team <rizkysr19@zohomail.com>")
 	m.SetHeader("To", to)
-	// m.SetAddressHeader("Cc", "<RECIPIENT CC>", "<RECIPIENT CC NAME>")
 	m.SetHeader("Subject", subject)
 	m.SetBody("text/html", result)
-	// m.Attach(templateFile) // attach whatever you want
 	senderPort := 587
 	d := gomail.NewDialer("smtp.zoho.com", senderPort, "rizkysr19@zohomail.com", "WAp2T7sYRDzk")
 	err := d.DialAndSend(m)
@@ -47,47 +47,45 @@ func ParseTemplate(templateFileName string, data interface{}) (string, error) {
 	return buf.String(), nil
 }
 
-func SendEmailVerification(to string, data interface{}) {
+func SendEmailTask(to, templateName string, data interface{}) {
 	var err error
-	template := "email_template_verifikasi.html"
-	subject := "sample email"
+	template := templateName
+	subject := "Selamat datang di Conversa"
 	err = SendEmail(to, subject, data, template)
 	if err == nil {
-		fmt.Println("send email '" + subject + "' success")
+		fmt.Println("Send email '" + subject + "' to '" + to + "' success")
 	} else {
 		fmt.Println(err)
 	}
 }
 
-// HandleWelcomeEmailTask handler for welcome email task.
-func HandleWelcomeEmailTask(c context.Context, t *asynq.Task) error {
+// HandleEmailTask handler for email task.
+func HandleEmailTask(c context.Context, t *asynq.Task) error {
 	// Get user ID from given task.
 	var data map[string]interface{}
 	if err := json.Unmarshal(t.Payload(), &data); err != nil {
 		return err
 	}
 
-	templateData := BodylinkEmail{
-		NAME: data["name"].(string),
+	templateData := Payload{
+		UserName: data["UserName"].(string),
 	}
-	to := "jamessaldo19@gmail.com"
-	go SendEmailVerification(to, templateData)
-
-	// Dummy message to the worker's output.
-	fmt.Printf("Send Welcome Email to User ID %d\n", data["user_id"])
+	to := data["To"].(string)
+	fmt.Printf("Sending Email to %s\n", data["UserName"].(string))
+	go SendEmailTask(to, data["TemplateName"].(string), templateData)
 
 	return nil
 }
 
-// HandleReminderEmailTask for reminder email task.
-func HandleReminderEmailTask(c context.Context, t *asynq.Task) error {
+// HandleDelayedEmailTask for delayed email task.
+func HandleDelayedEmailTask(c context.Context, t *asynq.Task) error {
 	var data map[string]interface{}
 	if err := json.Unmarshal(t.Payload(), &data); err != nil {
 		return err
 	}
 
 	// Dummy message to the worker's output.
-	fmt.Printf("Send Reminder Email to User ID %d\n", data["user_id"])
+	fmt.Printf("Send Delayed Email to %s\n", data["UserName"].(string))
 	fmt.Printf("Reason: time is up (%v)\n", data["sent_in"])
 
 	return nil
