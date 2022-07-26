@@ -312,14 +312,11 @@ func TestGetCommentAndCreator_Success(t *testing.T) {
 		t.Errorf("cannot unmarshal response: %v\n", err)
 	}
 	comment := commentAndCreator["comment"].(map[string]interface{})
-	creator := commentAndCreator["creator"]
 
 	assert.Equal(t, rr.Code, 200)
 
 	assert.EqualValues(t, comment["post_id"], 1)
 	assert.EqualValues(t, comment["content"], "Comment content")
-
-	assert.EqualValues(t, creator, "jamessaldo")
 }
 
 func TestUpdateComment_Success_With_File(t *testing.T) {

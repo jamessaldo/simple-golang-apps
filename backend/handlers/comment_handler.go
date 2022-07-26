@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/anandvarma/namegen"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +17,8 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 
 	content := c.PostForm("content")
 	post_id := c.PostForm("post_id")
-	creator := c.PostForm("creator")
+	ngen := namegen.New()
+	creator := ngen.Get()
 	postId, err := strconv.ParseUint(post_id, 10, 64)
 	if err != nil {
 		saveCommentError["invalid_post_id"] = "invalid post id"

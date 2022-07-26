@@ -312,14 +312,11 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 		t.Errorf("cannot unmarshal response: %v\n", err)
 	}
 	post := postAndCreator["post"].(map[string]interface{})
-	creator := postAndCreator["creator"]
 
 	assert.Equal(t, rr.Code, 200)
 
 	assert.EqualValues(t, post["title"], "Post title")
 	assert.EqualValues(t, post["description"], "Post description")
-
-	assert.EqualValues(t, creator, "jamessaldo")
 }
 
 func TestUpdatePost_Success_With_File(t *testing.T) {

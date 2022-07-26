@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/anandvarma/namegen"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +17,8 @@ func (handler *Handler) SavePost(c *gin.Context) {
 
 	title := c.PostForm("title")
 	description := c.PostForm("description")
-	creator := c.PostForm("creator")
+	ngen := namegen.New()
+	creator := ngen.Get()
 	if fmt.Sprintf("%T", title) != "string" || fmt.Sprintf("%T", description) != "string" || fmt.Sprintf("%T", creator) != "string" {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"invalid_json": "Invalid json",
