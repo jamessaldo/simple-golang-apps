@@ -8,12 +8,13 @@ import (
 
 type Post struct {
 	ID          uint64     `gorm:"primary_key;auto_increment" json:"id"`
-	UserID      uint64     `gorm:"size:100;not null;" json:"user_id"`
 	Title       string     `gorm:"size:100;not null;unique" json:"title"`
 	Description string     `gorm:"text;not null;" json:"description"`
+	Creator     string     `gorm:"size:100;not null;" json:"creator"`
 	CreatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at"`
+	Comments    []Comment
 }
 
 func (p *Post) BeforeSave() {
@@ -43,6 +44,9 @@ func (p *Post) Validate(action string) map[string]string {
 		}
 		if p.Description == "" || p.Description == "null" {
 			errorMessages["desc_required"] = "description is required"
+		}
+		if p.Creator == "" || p.Creator == "null" {
+			errorMessages["creator_required"] = "creator is required"
 		}
 	}
 	return errorMessages

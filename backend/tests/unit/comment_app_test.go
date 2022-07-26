@@ -46,20 +46,17 @@ func TestSaveComment_Success(t *testing.T) {
 			ID:      1,
 			PostID:  1,
 			Content: "comment content",
-			UserID:  1,
 		}, nil
 	}
 	comment := &domain.Comment{
 		ID:      1,
 		PostID:  1,
 		Content: "comment content",
-		UserID:  1,
 	}
 	c, err := commentRepoFake.SaveComment(comment)
 	assert.Nil(t, err)
 	assert.EqualValues(t, c.PostID, 1)
 	assert.EqualValues(t, c.Content, "comment content")
-	assert.EqualValues(t, c.UserID, 1)
 }
 
 func TestGetComment_Success(t *testing.T) {
@@ -69,7 +66,6 @@ func TestGetComment_Success(t *testing.T) {
 			ID:      1,
 			PostID:  1,
 			Content: "comment content",
-			UserID:  1,
 		}, nil
 	}
 	commentId := uint64(1)
@@ -77,7 +73,6 @@ func TestGetComment_Success(t *testing.T) {
 	assert.Nil(t, err)
 	assert.EqualValues(t, c.PostID, 1)
 	assert.EqualValues(t, c.Content, "comment content")
-	assert.EqualValues(t, c.UserID, 1)
 }
 
 func TestAllComment_Success(t *testing.T) {
@@ -88,13 +83,11 @@ func TestAllComment_Success(t *testing.T) {
 				ID:      1,
 				PostID:  1,
 				Content: "comment content first",
-				UserID:  1,
 			},
 			{
 				ID:      2,
 				PostID:  1,
 				Content: "comment content second",
-				UserID:  1,
 			},
 		}, nil
 	}
@@ -110,20 +103,17 @@ func TestUpdateComment_Success(t *testing.T) {
 			ID:      1,
 			PostID:  1,
 			Content: "comment content update",
-			UserID:  1,
 		}, nil
 	}
 	comment := &domain.Comment{
 		ID:      1,
 		PostID:  1,
 		Content: "comment content update",
-		UserID:  1,
 	}
 	c, err := commentRepoFake.UpdateComment(comment)
 	assert.Nil(t, err)
 	assert.EqualValues(t, c.PostID, 1)
 	assert.EqualValues(t, c.Content, "comment content update")
-	assert.EqualValues(t, c.UserID, 1)
 }
 
 func TestDeleteComment_Success(t *testing.T) {

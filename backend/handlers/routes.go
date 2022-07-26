@@ -11,11 +11,18 @@ func (s *Server) InitializeRoutes() {
 	s.Router.GET("/users/:user_id", s.Handler.GetUser)
 
 	//post routes
-	s.Router.POST("/post", middleware.AuthMiddleware(), middleware.MaxSizeAllowed(8192000), s.Handler.SavePost)
-	s.Router.PUT("/post/:post_id", middleware.AuthMiddleware(), middleware.MaxSizeAllowed(8192000), s.Handler.UpdatePost)
+	s.Router.POST("/post", s.Handler.SavePost)
+	s.Router.PUT("/post/:post_id", s.Handler.UpdatePost)
 	s.Router.GET("/post/:post_id", s.Handler.GetPostAndCreator)
-	s.Router.DELETE("/post/:post_id", middleware.AuthMiddleware(), s.Handler.DeletePost)
+	s.Router.DELETE("/post/:post_id", s.Handler.DeletePost)
 	s.Router.GET("/post", s.Handler.GetAllPost)
+
+	//comment routes
+	s.Router.POST("/comment", s.Handler.SaveComment)
+	s.Router.PUT("/comment/:comment_id", s.Handler.UpdateComment)
+	s.Router.GET("/comment/:comment_id", s.Handler.GetCommentAndCreator)
+	s.Router.DELETE("/comment/:comment_id", s.Handler.DeleteComment)
+	s.Router.GET("/comment", s.Handler.GetAllComment)
 
 	//authentication routes
 	s.Router.POST("/login", s.Handler.Login)

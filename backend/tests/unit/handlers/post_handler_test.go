@@ -127,7 +127,6 @@ func TestSaverPost_Success(t *testing.T) {
 	PostApp.SavePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title",
 			Description: "Post description",
 		}, nil
@@ -182,7 +181,6 @@ func TestSaverPost_Success(t *testing.T) {
 	}
 	assert.Equal(t, rr.Code, 201)
 	assert.EqualValues(t, post.ID, 1)
-	assert.EqualValues(t, post.UserID, 1)
 	assert.EqualValues(t, post.Title, "Post title")
 	assert.EqualValues(t, post.Description, "Post description")
 }
@@ -252,13 +250,11 @@ func TestGetAllPost_Success(t *testing.T) {
 		return []domain.Post{
 			{
 				ID:          1,
-				UserID:      1,
 				Title:       "Post title",
 				Description: "Post description",
 			},
 			{
 				ID:          2,
-				UserID:      2,
 				Title:       "Post title second",
 				Description: "Post description second",
 			},
@@ -296,7 +292,6 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title",
 			Description: "Post description",
 		}, nil
@@ -317,15 +312,14 @@ func TestGetPostAndCreator_Success(t *testing.T) {
 		t.Errorf("cannot unmarshal response: %v\n", err)
 	}
 	post := postAndCreator["post"].(map[string]interface{})
-	creator := postAndCreator["creator"].(map[string]interface{})
+	creator := postAndCreator["creator"]
 
 	assert.Equal(t, rr.Code, 200)
 
 	assert.EqualValues(t, post["title"], "Post title")
 	assert.EqualValues(t, post["description"], "Post description")
 
-	assert.EqualValues(t, creator["first_name"], "james")
-	assert.EqualValues(t, creator["last_name"], "saldo")
+	assert.EqualValues(t, creator, "jamessaldo")
 }
 
 func TestUpdatePost_Success_With_File(t *testing.T) {
@@ -353,7 +347,6 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title",
 			Description: "Post description",
 		}, nil
@@ -362,7 +355,6 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 	PostApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title updated",
 			Description: "Post description updated",
 		}, nil
@@ -418,7 +410,6 @@ func TestUpdatePost_Success_With_File(t *testing.T) {
 	}
 	assert.Equal(t, rr.Code, 200)
 	assert.EqualValues(t, post.ID, 1)
-	assert.EqualValues(t, post.UserID, 1)
 	assert.EqualValues(t, post.Title, "Post title updated")
 	assert.EqualValues(t, post.Description, "Post description updated")
 }
@@ -449,7 +440,6 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title",
 			Description: "Post description",
 		}, nil
@@ -458,7 +448,6 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 	PostApp.UpdatePostFn = func(*domain.Post) (*domain.Post, map[string]string) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title updated",
 			Description: "Post description updated",
 		}, nil
@@ -514,7 +503,6 @@ func TestUpdatePost_Success_Without_File(t *testing.T) {
 	}
 	assert.Equal(t, rr.Code, 200)
 	assert.EqualValues(t, post.ID, 1)
-	assert.EqualValues(t, post.UserID, 1)
 	assert.EqualValues(t, post.Title, "Post title updated")
 	assert.EqualValues(t, post.Description, "Post description updated")
 }
@@ -623,7 +611,6 @@ func TestDeletePost_Success(t *testing.T) {
 	PostApp.GetPostFn = func(uint64) (*domain.Post, error) {
 		return &domain.Post{
 			ID:          1,
-			UserID:      1,
 			Title:       "Post title",
 			Description: "Post description",
 		}, nil

@@ -1,6 +1,6 @@
 run:
 	cd backend && go run main.go
-run-worker:
+worker:
 	cd mailer && go run server.go
 build:
 	go build ./...

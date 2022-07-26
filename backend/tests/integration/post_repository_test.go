@@ -16,7 +16,6 @@ func TestSavePost_Success(t *testing.T) {
 	var post = domain.Post{}
 	post.Title = "post title"
 	post.Description = "post description"
-	post.UserID = 1
 
 	repo := adapters.NewPostRepository(conn)
 
@@ -24,7 +23,6 @@ func TestSavePost_Success(t *testing.T) {
 	assert.Nil(t, saveErr)
 	assert.EqualValues(t, p.Title, "post title")
 	assert.EqualValues(t, p.Description, "post description")
-	assert.EqualValues(t, p.UserID, 1)
 }
 
 //Failure can be due to duplicate email, etc
@@ -42,7 +40,6 @@ func TestSavePost_Failure(t *testing.T) {
 	var post = domain.Post{}
 	post.Title = "post title"
 	post.Description = "post desc"
-	post.UserID = 1
 
 	repo := adapters.NewPostRepository(conn)
 	p, saveErr := repo.SavePost(&post)
@@ -70,7 +67,6 @@ func TestGetPost_Success(t *testing.T) {
 	assert.Nil(t, saveErr)
 	assert.EqualValues(t, p.Title, post.Title)
 	assert.EqualValues(t, p.Description, post.Description)
-	assert.EqualValues(t, p.UserID, post.UserID)
 }
 
 func TestGetAllPost_Success(t *testing.T) {
@@ -109,7 +105,6 @@ func TestUpdatePost_Success(t *testing.T) {
 	assert.EqualValues(t, p.ID, 1)
 	assert.EqualValues(t, p.Title, "post title update")
 	assert.EqualValues(t, p.Description, "post description update")
-	assert.EqualValues(t, p.UserID, 1)
 }
 
 //Duplicate title error

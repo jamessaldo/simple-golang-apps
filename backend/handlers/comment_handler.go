@@ -11,30 +11,18 @@ import (
 )
 
 func (handler *Handler) SaveComment(c *gin.Context) {
-	//check is the user is authenticated first
-	metadata, err := handler.tk.ExtractTokenMetadata(c.Request)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
-	//lookup the metadata in redis:
-	userId, err := handler.rd.FetchAuth(metadata.TokenUuid)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
 	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
 	var saveCommentError = make(map[string]string)
 
 	content := c.PostForm("content")
 	post_id := c.PostForm("post_id")
-
+	creator := c.PostForm("creator")
 	postId, err := strconv.ParseUint(post_id, 10, 64)
 	if err != nil {
 		saveCommentError["invalid_post_id"] = "invalid post id"
 	}
 
-	if fmt.Sprintf("%T", content) != "string" || fmt.Sprintf("%T", postId) != "uint64" {
+	if fmt.Sprintf("%T", content) != "string" || fmt.Sprintf("%T", postId) != "uint64" || fmt.Sprintf("%T", creator) != "string" {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"invalid_json": "Invalid json",
 		})
@@ -45,23 +33,17 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 	emptyComment := domain.Comment{}
 	emptyComment.Content = content
 	emptyComment.PostID = postId
+	emptyComment.Creator = creator
 	saveCommentError = emptyComment.Validate("")
 	if len(saveCommentError) > 0 {
 		c.JSON(http.StatusUnprocessableEntity, saveCommentError)
 		return
 	}
 
-	//check if the user exist
-	_, err = handler.userApp.GetUser(userId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "user not found, unauthorized")
-		return
-	}
-
 	var comment = domain.Comment{}
-	comment.UserID = userId
 	comment.Content = content
 	comment.PostID = postId
+	comment.Creator = creator
 	// comment.CommentImage = uploadedFile
 	savedComment, saveErr := handler.CommentApp.SaveComment(&comment)
 	if saveErr != nil {
@@ -72,18 +54,6 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 }
 
 func (handler *Handler) UpdateComment(c *gin.Context) {
-	//Check if the user is authenticated first
-	metadata, err := handler.tk.ExtractTokenMetadata(c.Request)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "Unauthorized")
-		return
-	}
-	//lookup the metadata in redis:
-	userId, err := handler.rd.FetchAuth(metadata.TokenUuid)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
 	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
 	var updateCommentError = make(map[string]string)
 
@@ -117,21 +87,11 @@ func (handler *Handler) UpdateComment(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, updateCommentError)
 		return
 	}
-	user, err := handler.userApp.GetUser(userId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "user not found, unauthorized")
-		return
-	}
 
 	//check if the comment exist:
 	comment, err := handler.CommentApp.GetComment(commentId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
-		return
-	}
-	//if the user id doesnt match with the one we have, dont update. This is the case where an authenticated user tries to update someone else comment using commentman, curl, etc
-	if user.ID != comment.UserID {
-		c.JSON(http.StatusUnauthorized, "you are not the owner of this comment")
 		return
 	}
 
@@ -166,14 +126,8 @@ func (handler *Handler) GetCommentAndCreator(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	user, err := handler.userApp.GetUser(comment.UserID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error())
-		return
-	}
 	commentAndUser := map[string]interface{}{
 		"comment": comment,
-		"creator": user.PublicUser(),
 	}
 	c.JSON(http.StatusOK, commentAndUser)
 }

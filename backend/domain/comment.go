@@ -8,9 +8,9 @@ import (
 
 type Comment struct {
 	ID        uint64     `gorm:"primary_key;auto_increment" json:"id"`
-	UserID    uint64     `gorm:"size:100;not null;" json:"user_id"`
 	PostID    uint64     `gorm:"size:100;not null;" json:"post_id"`
 	Content   string     `gorm:"text;not null;" json:"content"`
+	Creator   string     `gorm:"size:100;not null;" json:"creator"`
 	CreatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
@@ -37,6 +37,9 @@ func (c *Comment) Validate(action string) map[string]string {
 	default:
 		if c.Content == "" || c.Content == "null" {
 			errorMessages["content_required"] = "content is required"
+		}
+		if c.Creator == "" || c.Creator == "null" {
+			errorMessages["creator_required"] = "creator is required"
 		}
 	}
 	return errorMessages

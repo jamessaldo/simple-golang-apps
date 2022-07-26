@@ -127,7 +127,6 @@ func TestSaverComment_Success(t *testing.T) {
 	CommentApp.SaveCommentFn = func(*domain.Comment) (*domain.Comment, map[string]string) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content",
 		}, nil
@@ -182,7 +181,6 @@ func TestSaverComment_Success(t *testing.T) {
 	}
 	assert.Equal(t, rr.Code, 201)
 	assert.EqualValues(t, comment.ID, 1)
-	assert.EqualValues(t, comment.UserID, 1)
 	assert.EqualValues(t, comment.PostID, 1)
 	assert.EqualValues(t, comment.Content, "Comment content")
 }
@@ -252,13 +250,11 @@ func TestGetAllComment_Success(t *testing.T) {
 		return []domain.Comment{
 			{
 				ID:      1,
-				UserID:  1,
 				PostID:  1,
 				Content: "Comment content",
 			},
 			{
 				ID:      2,
-				UserID:  2,
 				PostID:  1,
 				Content: "Comment content second",
 			},
@@ -296,7 +292,6 @@ func TestGetCommentAndCreator_Success(t *testing.T) {
 	CommentApp.GetCommentFn = func(uint64) (*domain.Comment, error) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content",
 		}, nil
@@ -317,15 +312,14 @@ func TestGetCommentAndCreator_Success(t *testing.T) {
 		t.Errorf("cannot unmarshal response: %v\n", err)
 	}
 	comment := commentAndCreator["comment"].(map[string]interface{})
-	creator := commentAndCreator["creator"].(map[string]interface{})
+	creator := commentAndCreator["creator"]
 
 	assert.Equal(t, rr.Code, 200)
 
 	assert.EqualValues(t, comment["post_id"], 1)
 	assert.EqualValues(t, comment["content"], "Comment content")
 
-	assert.EqualValues(t, creator["first_name"], "james")
-	assert.EqualValues(t, creator["last_name"], "saldo")
+	assert.EqualValues(t, creator, "jamessaldo")
 }
 
 func TestUpdateComment_Success_With_File(t *testing.T) {
@@ -353,7 +347,6 @@ func TestUpdateComment_Success_With_File(t *testing.T) {
 	CommentApp.GetCommentFn = func(uint64) (*domain.Comment, error) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content",
 		}, nil
@@ -362,7 +355,6 @@ func TestUpdateComment_Success_With_File(t *testing.T) {
 	CommentApp.UpdateCommentFn = func(*domain.Comment) (*domain.Comment, map[string]string) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content updated",
 		}, nil
@@ -418,7 +410,6 @@ func TestUpdateComment_Success_With_File(t *testing.T) {
 	}
 	assert.Equal(t, rr.Code, 200)
 	assert.EqualValues(t, comment.ID, 1)
-	assert.EqualValues(t, comment.UserID, 1)
 	assert.EqualValues(t, comment.PostID, 1)
 	assert.EqualValues(t, comment.Content, "Comment content updated")
 }
@@ -449,7 +440,6 @@ func TestUpdateComment_Success_Without_File(t *testing.T) {
 	CommentApp.GetCommentFn = func(uint64) (*domain.Comment, error) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content",
 		}, nil
@@ -458,7 +448,6 @@ func TestUpdateComment_Success_Without_File(t *testing.T) {
 	CommentApp.UpdateCommentFn = func(*domain.Comment) (*domain.Comment, map[string]string) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content updated",
 		}, nil
@@ -514,7 +503,6 @@ func TestUpdateComment_Success_Without_File(t *testing.T) {
 	}
 	assert.Equal(t, rr.Code, 200)
 	assert.EqualValues(t, comment.ID, 1)
-	assert.EqualValues(t, comment.UserID, 1)
 	assert.EqualValues(t, comment.PostID, 1)
 	assert.EqualValues(t, comment.Content, "Comment content updated")
 }
@@ -623,7 +611,6 @@ func TestDeleteComment_Success(t *testing.T) {
 	CommentApp.GetCommentFn = func(uint64) (*domain.Comment, error) {
 		return &domain.Comment{
 			ID:      1,
-			UserID:  1,
 			PostID:  1,
 			Content: "Comment content",
 		}, nil

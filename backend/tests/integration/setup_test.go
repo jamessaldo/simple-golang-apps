@@ -106,7 +106,6 @@ func seedPost(db *gorm.DB) (*domain.Post, error) {
 	post := &domain.Post{
 		Title:       "post title",
 		Description: "post desc",
-		UserID:      1,
 	}
 	err := db.Create(&post).Error
 	if err != nil {
@@ -120,12 +119,10 @@ func seedPosts(db *gorm.DB) ([]domain.Post, error) {
 		{
 			Title:       "first post",
 			Description: "first desc",
-			UserID:      1,
 		},
 		{
 			Title:       "second post",
 			Description: "second desc",
-			UserID:      1,
 		},
 	}
 	for _, v := range posts {
@@ -140,7 +137,6 @@ func seedPosts(db *gorm.DB) ([]domain.Post, error) {
 func seedComment(db *gorm.DB) (*domain.Comment, error) {
 	comment := &domain.Comment{
 		Content: "comment content",
-		UserID:  1,
 		PostID:  1,
 	}
 	err := db.Create(&comment).Error
@@ -154,12 +150,10 @@ func seedComments(db *gorm.DB) ([]domain.Comment, error) {
 	comments := []domain.Comment{
 		{
 			Content: "first content",
-			UserID:  1,
 			PostID:  1,
 		},
 		{
 			Content: "second content",
-			UserID:  1,
 			PostID:  1,
 		},
 	}

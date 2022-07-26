@@ -46,20 +46,17 @@ func TestSavePost_Success(t *testing.T) {
 			ID:          1,
 			Title:       "post title",
 			Description: "post description",
-			UserID:      1,
 		}, nil
 	}
 	post := &domain.Post{
 		ID:          1,
 		Title:       "post title",
 		Description: "post description",
-		UserID:      1,
 	}
 	p, err := postRepoFake.SavePost(post)
 	assert.Nil(t, err)
 	assert.EqualValues(t, p.Title, "post title")
 	assert.EqualValues(t, p.Description, "post description")
-	assert.EqualValues(t, p.UserID, 1)
 }
 
 func TestGetPost_Success(t *testing.T) {
@@ -69,7 +66,6 @@ func TestGetPost_Success(t *testing.T) {
 			ID:          1,
 			Title:       "post title",
 			Description: "post description",
-			UserID:      1,
 		}, nil
 	}
 	postId := uint64(1)
@@ -77,7 +73,6 @@ func TestGetPost_Success(t *testing.T) {
 	assert.Nil(t, err)
 	assert.EqualValues(t, p.Title, "post title")
 	assert.EqualValues(t, p.Description, "post description")
-	assert.EqualValues(t, p.UserID, 1)
 }
 
 func TestAllPost_Success(t *testing.T) {
@@ -88,13 +83,11 @@ func TestAllPost_Success(t *testing.T) {
 				ID:          1,
 				Title:       "post title first",
 				Description: "post description first",
-				UserID:      1,
 			},
 			{
 				ID:          2,
 				Title:       "post title second",
 				Description: "post description second",
-				UserID:      1,
 			},
 		}, nil
 	}
@@ -110,20 +103,17 @@ func TestUpdatePost_Success(t *testing.T) {
 			ID:          1,
 			Title:       "post title update",
 			Description: "post description update",
-			UserID:      1,
 		}, nil
 	}
 	post := &domain.Post{
 		ID:          1,
 		Title:       "post title update",
 		Description: "post description update",
-		UserID:      1,
 	}
 	p, err := postRepoFake.UpdatePost(post)
 	assert.Nil(t, err)
 	assert.EqualValues(t, p.Title, "post title update")
 	assert.EqualValues(t, p.Description, "post description update")
-	assert.EqualValues(t, p.UserID, 1)
 }
 
 func TestDeletePost_Success(t *testing.T) {

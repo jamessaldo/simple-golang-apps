@@ -11,24 +11,13 @@ import (
 )
 
 func (handler *Handler) SavePost(c *gin.Context) {
-	//check is the user is authenticated first
-	metadata, err := handler.tk.ExtractTokenMetadata(c.Request)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
-	//lookup the metadata in redis:
-	userId, err := handler.rd.FetchAuth(metadata.TokenUuid)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
 	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
 	var savePostError = make(map[string]string)
 
 	title := c.PostForm("title")
 	description := c.PostForm("description")
-	if fmt.Sprintf("%T", title) != "string" || fmt.Sprintf("%T", description) != "string" {
+	creator := c.PostForm("creator")
+	if fmt.Sprintf("%T", title) != "string" || fmt.Sprintf("%T", description) != "string" || fmt.Sprintf("%T", creator) != "string" {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"invalid_json": "Invalid json",
 		})
@@ -38,23 +27,17 @@ func (handler *Handler) SavePost(c *gin.Context) {
 	emptyPost := domain.Post{}
 	emptyPost.Title = title
 	emptyPost.Description = description
+	emptyPost.Creator = creator
 	savePostError = emptyPost.Validate("")
 	if len(savePostError) > 0 {
 		c.JSON(http.StatusUnprocessableEntity, savePostError)
 		return
 	}
 
-	//check if the user exist
-	_, err = handler.userApp.GetUser(userId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "user not found, unauthorized")
-		return
-	}
-
 	var post = domain.Post{}
-	post.UserID = userId
 	post.Title = title
 	post.Description = description
+	post.Creator = creator
 	// post.PostImage = uploadedFile
 	savedPost, saveErr := handler.PostApp.SavePost(&post)
 	if saveErr != nil {
@@ -65,18 +48,6 @@ func (handler *Handler) SavePost(c *gin.Context) {
 }
 
 func (handler *Handler) UpdatePost(c *gin.Context) {
-	//Check if the user is authenticated first
-	metadata, err := handler.tk.ExtractTokenMetadata(c.Request)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "Unauthorized")
-		return
-	}
-	//lookup the metadata in redis:
-	userId, err := handler.rd.FetchAuth(metadata.TokenUuid)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "unauthorized")
-		return
-	}
 	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
 	var updatePostError = make(map[string]string)
 
@@ -100,21 +71,11 @@ func (handler *Handler) UpdatePost(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, updatePostError)
 		return
 	}
-	user, err := handler.userApp.GetUser(userId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "user not found, unauthorized")
-		return
-	}
 
 	//check if the post exist:
 	post, err := handler.PostApp.GetPost(postId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
-		return
-	}
-	//if the user id doesnt match with the one we have, dont update. This is the case where an authenticated user tries to update someone else post using postman, curl, etc
-	if user.ID != post.UserID {
-		c.JSON(http.StatusUnauthorized, "you are not the owner of this post")
 		return
 	}
 
@@ -150,14 +111,9 @@ func (handler *Handler) GetPostAndCreator(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	user, err := handler.userApp.GetUser(post.UserID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error())
-		return
-	}
+
 	postAndUser := map[string]interface{}{
-		"post":    post,
-		"creator": user.PublicUser(),
+		"post": post,
 	}
 	c.JSON(http.StatusOK, postAndUser)
 }

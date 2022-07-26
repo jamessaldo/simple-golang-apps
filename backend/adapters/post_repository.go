@@ -46,7 +46,7 @@ func (r *PostRepo) SavePost(post *domain.Post) (*domain.Post, map[string]string)
 
 func (r *PostRepo) GetPost(id uint64) (*domain.Post, error) {
 	var post domain.Post
-	err := r.db.Debug().Where("id = ?", id).Take(&post).Error
+	err := r.db.Debug().Preload("Comments").Where("id = ?", id).Take(&post).Error
 	if err != nil {
 		return nil, errors.New("database error, please try again")
 	}
