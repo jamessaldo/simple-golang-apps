@@ -18,6 +18,18 @@ struct ConversaApp: App {
     }
 }
 
+var formatter_toDate: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    return formatter
+}()
+
+var formatter_toString: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd-MM-yyyy HH:mm"
+    return formatter
+}()
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -45,3 +57,10 @@ extension Color {
     }
 }
 
+extension Text {
+    init(_ string: String, configure: ((inout AttributedString) -> Void)) {
+        var attributedString = AttributedString(string) /// create an `AttributedString`
+        configure(&attributedString) /// configure using the closure
+        self.init(attributedString) /// initialize a `Text`
+    }
+}

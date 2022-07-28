@@ -14,7 +14,7 @@ type Post struct {
 	CreatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt   time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at"`
-	Comments    []Comment
+	Comments    []Comment  `json:"comments"`
 }
 
 func (p *Post) BeforeSave() {

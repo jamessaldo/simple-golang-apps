@@ -14,27 +14,31 @@ import (
 func (handler *Handler) SaveComment(c *gin.Context) {
 	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
 	var saveCommentError = make(map[string]string)
-
-	content := c.PostForm("content")
-	post_id := c.PostForm("post_id")
-	ngen := namegen.New()
-	creator := ngen.Get()
-	postId, err := strconv.ParseUint(post_id, 10, 64)
-	if err != nil {
-		saveCommentError["invalid_post_id"] = "invalid post id"
-	}
-
-	if fmt.Sprintf("%T", content) != "string" || fmt.Sprintf("%T", postId) != "uint64" || fmt.Sprintf("%T", creator) != "string" {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"invalid_json": "Invalid json",
-		})
+	emptyComment := domain.Comment{}
+	if err := c.ShouldBindJSON(&emptyComment); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, "Invalid json provided")
 		return
 	}
+	// content := c.PostForm("content")
+	// post_id := c.PostForm("post_id")
+	ngen := namegen.New()
+	creator := ngen.Get()
+	// postId, err := strconv.ParseUint(post_id, 10, 64)
+	// if err != nil {
+	// 	saveCommentError["invalid_post_id"] = "invalid post id"
+	// }
+
+	// if fmt.Sprintf("%T", content) != "string" || fmt.Sprintf("%T", postId) != "uint64" || fmt.Sprintf("%T", creator) != "string" {
+	// 	c.JSON(http.StatusUnprocessableEntity, gin.H{
+	// 		"invalid_json": "Invalid json",
+	// 	})
+	// 	return
+	// }
 
 	//We initialize a new comment for the purpose of validating: in case the payload is empty or an invalid data type is used
-	emptyComment := domain.Comment{}
-	emptyComment.Content = content
-	emptyComment.PostID = postId
+
+	// emptyComment.Content = content
+	// emptyComment.PostID = postId
 	emptyComment.Creator = creator
 	saveCommentError = emptyComment.Validate("")
 	if len(saveCommentError) > 0 {
@@ -43,8 +47,8 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 	}
 
 	var comment = domain.Comment{}
-	comment.Content = content
-	comment.PostID = postId
+	comment.Content = emptyComment.Content
+	comment.PostID = emptyComment.PostID
 	comment.Creator = creator
 	// comment.CommentImage = uploadedFile
 	savedComment, saveErr := handler.CommentApp.SaveComment(&comment)

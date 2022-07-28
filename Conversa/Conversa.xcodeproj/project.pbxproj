@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E65430FE28926B8200C56644 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65430FD28926B8200C56644 /* Model.swift */; };
 		E65F1C42288FF8BF00A4E57C /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65F1C40288FF8BF00A4E57C /* Item+CoreDataClass.swift */; };
 		E65F1C452890510C00A4E57C /* CreateQuestionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65F1C442890510C00A4E57C /* CreateQuestionModal.swift */; };
 		E6B3905E288FBBDC00AE8475 /* ConversaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3905D288FBBDC00AE8475 /* ConversaApp.swift */; };
@@ -20,6 +21,7 @@
 		E6B39080288FBBE000AE8475 /* ConversaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3907F288FBBE000AE8475 /* ConversaUITestsLaunchTests.swift */; };
 		E6B3908D288FC8B400AE8475 /* DetailQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3908C288FC8B400AE8475 /* DetailQuestion.swift */; };
 		E6B3908F288FE40E00AE8475 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3908E288FE40E00AE8475 /* SearchBar.swift */; };
+		E6D5831828913EF900B96721 /* CreateCommentModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D5831728913EF900B96721 /* CreateCommentModal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E65430FD28926B8200C56644 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		E65F1C40288FF8BF00A4E57C /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E65F1C442890510C00A4E57C /* CreateQuestionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuestionModal.swift; sourceTree = "<group>"; };
 		E6B3905A288FBBDC00AE8475 /* Conversa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Conversa.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +59,7 @@
 		E6B3907F288FBBE000AE8475 /* ConversaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversaUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		E6B3908C288FC8B400AE8475 /* DetailQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailQuestion.swift; sourceTree = "<group>"; };
 		E6B3908E288FE40E00AE8475 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		E6D5831728913EF900B96721 /* CreateCommentModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentModal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E65430FF28926E0300C56644 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E654310028926E1200C56644 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		E6B39051288FBBDC00AE8475 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +125,8 @@
 		E6B3905C288FBBDC00AE8475 /* Conversa */ = {
 			isa = PBXGroup;
 			children = (
+				E654310028926E1200C56644 /* ViewModels */,
+				E65430FF28926E0300C56644 /* Views */,
 				E6B3905D288FBBDC00AE8475 /* ConversaApp.swift */,
 				E6B3905F288FBBDC00AE8475 /* ContentView.swift */,
 				E6B39061288FBBE000AE8475 /* Assets.xcassets */,
@@ -116,6 +136,8 @@
 				E6B3908C288FC8B400AE8475 /* DetailQuestion.swift */,
 				E6B3908E288FE40E00AE8475 /* SearchBar.swift */,
 				E65F1C442890510C00A4E57C /* CreateQuestionModal.swift */,
+				E6D5831728913EF900B96721 /* CreateCommentModal.swift */,
+				E65430FD28926B8200C56644 /* Model.swift */,
 			);
 			path = Conversa;
 			sourceTree = "<group>";
@@ -280,8 +302,10 @@
 				E6B39060288FBBDC00AE8475 /* ContentView.swift in Sources */,
 				E6B3906A288FBBE000AE8475 /* Conversa.xcdatamodeld in Sources */,
 				E6B3905E288FBBDC00AE8475 /* ConversaApp.swift in Sources */,
+				E65430FE28926B8200C56644 /* Model.swift in Sources */,
 				E65F1C452890510C00A4E57C /* CreateQuestionModal.swift in Sources */,
 				E6B3908F288FE40E00AE8475 /* SearchBar.swift in Sources */,
+				E6D5831828913EF900B96721 /* CreateCommentModal.swift in Sources */,
 				E65F1C42288FF8BF00A4E57C /* Item+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

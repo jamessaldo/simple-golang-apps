@@ -14,21 +14,23 @@ import (
 func (handler *Handler) SavePost(c *gin.Context) {
 	//We we are using a frontend(vuejs), our errors need to have keys for easy checking, so we use a map to hold our errors
 	var savePostError = make(map[string]string)
-
-	title := c.PostForm("title")
-	description := c.PostForm("description")
-	ngen := namegen.New()
-	creator := ngen.Get()
-	if fmt.Sprintf("%T", title) != "string" || fmt.Sprintf("%T", description) != "string" || fmt.Sprintf("%T", creator) != "string" {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"invalid_json": "Invalid json",
-		})
+	emptyPost := domain.Post{}
+	if err := c.ShouldBindJSON(&emptyPost); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, "Invalid json provided")
 		return
 	}
+	// title := c.PostForm("title")
+	// description := c.PostForm("description")
+	ngen := namegen.New()
+	creator := ngen.Get()
+	// if fmt.Sprintf("%T", title) != "string" || fmt.Sprintf("%T", description) != "string" || fmt.Sprintf("%T", creator) != "string" {
+	// 	c.JSON(http.StatusUnprocessableEntity, gin.H{
+	// 		"invalid_json": "Invalid json",
+	// 	})
+	// 	return
+	// }
 	//We initialize a new post for the purpose of validating: in case the payload is empty or an invalid data type is used
-	emptyPost := domain.Post{}
-	emptyPost.Title = title
-	emptyPost.Description = description
+
 	emptyPost.Creator = creator
 	savePostError = emptyPost.Validate("")
 	if len(savePostError) > 0 {
@@ -37,8 +39,8 @@ func (handler *Handler) SavePost(c *gin.Context) {
 	}
 
 	var post = domain.Post{}
-	post.Title = title
-	post.Description = description
+	post.Title = emptyPost.Title
+	post.Description = emptyPost.Description
 	post.Creator = creator
 	// post.PostImage = uploadedFile
 	savedPost, saveErr := handler.PostApp.SavePost(&post)
@@ -114,10 +116,10 @@ func (handler *Handler) GetPostAndCreator(c *gin.Context) {
 		return
 	}
 
-	postAndUser := map[string]interface{}{
-		"post": post,
-	}
-	c.JSON(http.StatusOK, postAndUser)
+	// postAndUser := map[string]interface{}{
+	// 	"post": post.ID,
+	// }
+	c.JSON(http.StatusOK, post)
 }
 
 func (handler *Handler) DeletePost(c *gin.Context) {
