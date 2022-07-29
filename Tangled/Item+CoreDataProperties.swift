@@ -1,6 +1,6 @@
 //
 //  Item+CoreDataProperties.swift
-//  Conversa
+//  Tangled
 //
 //  Created by zy on 26/07/22.
 //

@@ -1,6 +1,6 @@
 //
 //  Persistence.swift
-//  Conversa
+//  Tangled
 //
 //  Created by zy on 26/07/22.
 //
@@ -31,7 +31,7 @@ struct PersistenceController {
     let container: NSPersistentContainer
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Conversa")
+        container = NSPersistentContainer(name: "Tangled")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }

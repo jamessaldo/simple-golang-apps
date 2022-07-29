@@ -1,14 +1,14 @@
 //
-//  ConversaTests.swift
-//  ConversaTests
+//  TangledTests.swift
+//  TangledTests
 //
 //  Created by zy on 26/07/22.
 //
 
 import XCTest
-@testable import Conversa
+@testable import Tangled
 
-class ConversaTests: XCTestCase {
+class TangledTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

@@ -1,13 +1,13 @@
 //
-//  ConversaUITestsLaunchTests.swift
-//  ConversaUITests
+//  TangledUITestsLaunchTests.swift
+//  TangledUITests
 //
 //  Created by zy on 26/07/22.
 //
 
 import XCTest
 
-class ConversaUITestsLaunchTests: XCTestCase {
+class TangledUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

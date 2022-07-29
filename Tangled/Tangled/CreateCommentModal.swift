@@ -1,6 +1,6 @@
 //
 //  CreateCommentModal.swift
-//  Conversa
+//  Tangled
 //
 //  Created by zy on 27/07/22.
 //
@@ -80,9 +80,9 @@ struct CreateCommentModal: View {
                             .foregroundColor(Color(hex: "#484848"))
                             .padding(.top, 8)
                             .multilineTextAlignment(.leading)
-                        Text("Replying to @julietvan") { string in
+                        Text("Replying to @\(post.creator ?? "Error")") { string in
                             string.foregroundColor = Color(hex: "#383838")
-                            if let range = string.range(of: "@julietvan") { /// here!
+                            if let range = string.range(of: "@\(post.creator ?? "Error")") { /// here!
                                 string[range].foregroundColor = .blue
                             }
                         }

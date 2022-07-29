@@ -21,7 +21,7 @@ type Payload struct {
 func SendEmail(to string, subject string, data interface{}, templateFile string) error {
 	result, _ := ParseTemplate(fmt.Sprintf("%s%s", "./templates/", templateFile), data)
 	m := gomail.NewMessage()
-	m.SetHeader("From", "Conversa Team <rizkysr19@zohomail.com>")
+	m.SetHeader("From", "Tangled Team <rizkysr19@zohomail.com>")
 	m.SetHeader("To", to)
 	m.SetHeader("Subject", subject)
 	m.SetBody("text/html", result)
@@ -50,7 +50,7 @@ func ParseTemplate(templateFileName string, data interface{}) (string, error) {
 func SendEmailTask(to, templateName string, data interface{}) {
 	var err error
 	template := templateName
-	subject := "Selamat datang di Conversa"
+	subject := "Selamat datang di Tangled"
 	err = SendEmail(to, subject, data, template)
 	if err == nil {
 		fmt.Println("Send email '" + subject + "' to '" + to + "' success")

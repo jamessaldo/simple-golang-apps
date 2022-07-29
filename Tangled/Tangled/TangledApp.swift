@@ -1,6 +1,6 @@
 //
-//  ConversaApp.swift
-//  Conversa
+//  TangledApp.swift
+//  Tangled
 //
 //  Created by zy on 26/07/22.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct ConversaApp: App {
+struct TangledApp: App {
     let persistenceController = PersistenceController.shared
     var body: some Scene {
         WindowGroup {
