@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E65430FE28926B8200C56644 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65430FD28926B8200C56644 /* Model.swift */; };
-		E65F1C42288FF8BF00A4E57C /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65F1C40288FF8BF00A4E57C /* Item+CoreDataClass.swift */; };
 		E65F1C452890510C00A4E57C /* CreateQuestionModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65F1C442890510C00A4E57C /* CreateQuestionModal.swift */; };
 		E6B3905E288FBBDC00AE8475 /* TangledApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3905D288FBBDC00AE8475 /* TangledApp.swift */; };
 		E6B39060288FBBDC00AE8475 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3905F288FBBDC00AE8475 /* ContentView.swift */; };
@@ -43,7 +42,6 @@
 
 /* Begin PBXFileReference section */
 		E65430FD28926B8200C56644 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		E65F1C40288FF8BF00A4E57C /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E65F1C442890510C00A4E57C /* CreateQuestionModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuestionModal.swift; sourceTree = "<group>"; };
 		E6B3905A288FBBDC00AE8475 /* Tangled.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tangled.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B3905D288FBBDC00AE8475 /* TangledApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TangledApp.swift; sourceTree = "<group>"; };
@@ -104,7 +102,6 @@
 		E6B39051288FBBDC00AE8475 = {
 			isa = PBXGroup;
 			children = (
-				E65F1C40288FF8BF00A4E57C /* Item+CoreDataClass.swift */,
 				E6B3905C288FBBDC00AE8475 /* Tangled */,
 				E6B39072288FBBE000AE8475 /* TangledTests */,
 				E6B3907C288FBBE000AE8475 /* TangledUITests */,
@@ -246,7 +243,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E6B39055288FBBDC00AE8475 /* Build configuration list for PBXProject "Conversa" */;
+			buildConfigurationList = E6B39055288FBBDC00AE8475 /* Build configuration list for PBXProject "Tangled" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -306,7 +303,6 @@
 				E65F1C452890510C00A4E57C /* CreateQuestionModal.swift in Sources */,
 				E6B3908F288FE40E00AE8475 /* SearchBar.swift in Sources */,
 				E6D5831828913EF900B96721 /* CreateCommentModal.swift in Sources */,
-				E65F1C42288FF8BF00A4E57C /* Item+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,7 +590,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E6B39055288FBBDC00AE8475 /* Build configuration list for PBXProject "Conversa" */ = {
+		E6B39055288FBBDC00AE8475 /* Build configuration list for PBXProject "Tangled" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6B39081288FBBE000AE8475 /* Debug */,
