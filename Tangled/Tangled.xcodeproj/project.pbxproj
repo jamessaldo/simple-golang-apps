@@ -20,6 +20,7 @@
 		E6B39080288FBBE000AE8475 /* TangledUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3907F288FBBE000AE8475 /* TangledUITestsLaunchTests.swift */; };
 		E6B3908D288FC8B400AE8475 /* DetailQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3908C288FC8B400AE8475 /* DetailQuestion.swift */; };
 		E6B3908F288FE40E00AE8475 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B3908E288FE40E00AE8475 /* SearchBar.swift */; };
+		E6BA93E02893DE8900BE7F83 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BA93DE2893DE8900BE7F83 /* Item+CoreDataClass.swift */; };
 		E6D5831828913EF900B96721 /* CreateCommentModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D5831728913EF900B96721 /* CreateCommentModal.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		E6B3907F288FBBE000AE8475 /* TangledUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TangledUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		E6B3908C288FC8B400AE8475 /* DetailQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailQuestion.swift; sourceTree = "<group>"; };
 		E6B3908E288FE40E00AE8475 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		E6BA93DE2893DE8900BE7F83 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		E6D5831728913EF900B96721 /* CreateCommentModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCommentModal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +124,7 @@
 		E6B3905C288FBBDC00AE8475 /* Tangled */ = {
 			isa = PBXGroup;
 			children = (
+				E6BA93DE2893DE8900BE7F83 /* Item+CoreDataClass.swift */,
 				E654310028926E1200C56644 /* ViewModels */,
 				E65430FF28926E0300C56644 /* Views */,
 				E6B3905D288FBBDC00AE8475 /* TangledApp.swift */,
@@ -298,6 +301,7 @@
 				E6B39067288FBBE000AE8475 /* Persistence.swift in Sources */,
 				E6B39060288FBBDC00AE8475 /* ContentView.swift in Sources */,
 				E6B3906A288FBBE000AE8475 /* Tangled.xcdatamodeld in Sources */,
+				E6BA93E02893DE8900BE7F83 /* Item+CoreDataClass.swift in Sources */,
 				E6B3905E288FBBDC00AE8475 /* TangledApp.swift in Sources */,
 				E65430FE28926B8200C56644 /* Model.swift in Sources */,
 				E65F1C452890510C00A4E57C /* CreateQuestionModal.swift in Sources */,
