@@ -49,7 +49,7 @@ Catatan: Sebenarnya untuk sebuah *service* yang hanya membuat CRUD sederhana sep
 
 Berikut merupakan potongan *code* dari salah satu fungsi untuk menyimpan data *comment* dari *comment repository*.
 
-```
+```go
 func (r *CommentRepo) SaveComment(comment *domain.Comment) (*domain.Comment, map[string]string) {
  dbErr := map[string]string{}
 
@@ -60,5 +60,35 @@ func (r *CommentRepo) SaveComment(comment *domain.Comment) (*domain.Comment, map
   return nil, dbErr
  }
  return comment, nil
+}
+```
+
+Setelah kita menentukan *Domain Model* dan membuat *repository*, maka langkah terakhir yang diperlukan adalah dengan membuat *handler* yang akan mengatur bagaimana *request* yang masuk diatur oleh sistem. Saya menggunakan *framework* [Gin](https://gin-gonic.com/) sebagai *middleware* untuk menerima data maupun *routing* suatu *endpoint*.
+
+Berikut merupakan potongan *code* dari salah satu *route* untuk menyimpan suatu komentar serta fungsi untuk mengatur logika penyimpanan suatu komentar.
+
+```go
+//comment routes
+s.Router.POST("/comment", s.Handler.SaveComment)
+
+//save comment handler
+func (handler *Handler) SaveComment(c *gin.Context) {
+ var comment = domain.Comment{}
+ if err := c.ShouldBindJSON(&comment); err != nil {
+  c.JSON(http.StatusUnprocessableEntity, err.Error())
+  return
+ }
+
+ ngen := namegen.New()
+ creator := ngen.Get()
+
+ comment.Creator = creator
+
+ savedComment, saveErr := handler.CommentApp.SaveComment(&comment)
+ if saveErr != nil {
+  c.JSON(http.StatusInternalServerError, saveErr)
+  return
+ }
+ c.JSON(http.StatusCreated, savedComment)
 }
 ```
