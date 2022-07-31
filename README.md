@@ -1,12 +1,12 @@
-# Tangled - Nano Challange 2
+# **Tangled - Nano Challange 2**
 
-## Intros
+## **Intros**
 
 Halo semua! Perkenalkan saya Ghozy, pada kesempatan kali ini saya ingin berbagi tentang sebuah apps sederhana bernama **Tangled**. **Tangled** berdasarkan bahasa Inggris berarti **kusut**, sedangkan **Tangle(t)** dalam bahasa Jawa memiliki arti **tanya** sehingga aplikasi **Tangled** diharapkan dapat menjadi sebuah aplikasi untuk bertanya ketika kalian sudah merasa kusut terutama karena kerjain sebuah kodingan maupun design 🤪.
 
 Aplikasi **Tangled** untuk saat ini masih berjalan pada platform iOS dan telah terintegrasi dengan ***micro-services***. Pada percobaan kali ini, saya menggunakan arsitektur DDD (*Domain-Drive Design*) pada ***backend service*** untuk mengatur data **post** dan **comment** yang telah di kirim/minta oleh **Tangled**.
 
-## Let's having fun with Go
+## **Let's having fun with Go**
 
 Oke, sebelum kita mulai bahsa lebih lanjut tentang gimana saya bikin *micro-services* dengan Go, mari kita bahas dulu kenapa harus dengan Go?
 
@@ -14,15 +14,15 @@ Pertama kalinya saya menggunakan Go itu sejak 2020 dan hal tersebut menjadi peng
 
 Untuk lebih lanjut dalam mengenal Go, kalian bisa melakukan *research* tersendiri yaa terkait Go!
 
-## Micro-services
+## **Micro-services**
 
-### Backend service
+### **Backend service**
 
 Pada bagian ini saya ingin sedikit menjelaskan tentang bagaimana DDD dapat bekerja pada Go (tentu *code* ini masih jauh dari kata sempurna, jadi mohon pengertiannya yaa). Sebelumnya saya sangat merekomendasikan kalian untuk membaca buku *Architecture Patterns with Python* yang ditulis oleh Harry J.W. Percival & Bob Gregory, meski buku tersebut memberikan contoh konsep DDD pada bahasa Python tapi konsep yang di terapkan cukup identik dengan yang saya terapkan pada Go kali ini.
 
 Kita akan memulai dengan pembahasan **Domain Model**. Bagi teman-teman di Apple Developer Academy mungkin sudah tidak asing dengan kata *Domain Investigate* dan *General Investigate*. *Domain* dapat kita artikan secara sederhana sebagai hal/masalah yang ingin kita selesaikan. Pada kasus ini masalah yang akan kita selesaikan adalah bagaimana seorang *user* dapat bertanya maupun menjawab pertanyaan secara tak dikenal. Maka kali ini kita akan memiliki 2 entitas diantaranya Post dan Comment seperti ilustrasi dibawah ini.
 
-## Domain Model
+### **Domain Model**
 
 ```mermaid
 classDiagram
@@ -50,6 +50,7 @@ Catatan: Sebenarnya untuk sebuah *service* yang hanya membuat CRUD sederhana sep
 Berikut merupakan potongan *code* dari salah satu fungsi untuk menyimpan data *comment* dari *comment repository*.
 
 ```go
+// backend/adapters/comment_repository.go
 func (r *CommentRepo) SaveComment(comment *domain.Comment) (*domain.Comment, map[string]string) {
  dbErr := map[string]string{}
 
@@ -65,13 +66,13 @@ func (r *CommentRepo) SaveComment(comment *domain.Comment) (*domain.Comment, map
 
 Setelah kita menentukan *Domain Model* dan membuat *repository*, maka langkah terakhir yang diperlukan adalah dengan membuat *handler* yang akan mengatur bagaimana *request* yang masuk diatur oleh sistem. Saya menggunakan *framework* [Gin](https://gin-gonic.com/) sebagai *middleware* untuk menerima data maupun *routing* suatu *endpoint*.
 
-Berikut merupakan potongan *code* dari salah satu *route* untuk menyimpan suatu komentar serta fungsi untuk mengatur logika penyimpanan suatu komentar.
+Berikut merupakan potongan *code* dari salah satu *routes* untuk menyimpan suatu komentar serta fungsi untuk mengatur logika penyimpanan suatu komentar.
 
 ```go
-//comment routes
+// backend/handlers/handler.go
 s.Router.POST("/comment", s.Handler.SaveComment)
 
-//save comment handler
+// backend/handlers/comment_handler.go
 func (handler *Handler) SaveComment(c *gin.Context) {
  var comment = domain.Comment{}
  if err := c.ShouldBindJSON(&comment); err != nil {
@@ -90,5 +91,55 @@ func (handler *Handler) SaveComment(c *gin.Context) {
   return
  }
  c.JSON(http.StatusCreated, savedComment)
+}
+```
+
+### **Mailer Service**
+
+Ketika kita berbicara tentang *micro-services*, maka sudah pasti adanya lebih dari satu *service* yang bekerja. Pada percobaan kali ini saya memadukan *backend service* dengan *mailer service* yang bertugas untuk mengirimkan *e-mail* setiap kali di pantik oleh *backend service*.
+
+*Mailer service* bekerja dengan memanfaatkan [gomail.v2](gopkg.in/gomail.v2) sebagai *framework mailer*. Dalam menghubungkan antara *backend service* dengan *mailer service*, saya memanfaatkan *framework* [asynq](github.com/hibiken/asynq) yang bekerja dibawah *redis*.
+
+Berikut merupakan potongan *code* dari fungsi untuk mengurus *request* pengiriman *e-mail* dari *mailer service* dan bagaimana cara *backend service* mengirimkan *request* pengiriman *e-mail* terhadap *mailer service*.
+
+```go
+// backend/handlers/user_handler.go
+func (handler *Handler) SaveUser(c *gin.Context) {
+ var user domain.User{}
+ if err := c.ShouldBindJSON(&comment); err != nil {
+  c.JSON(http.StatusUnprocessableEntity, err.Error())
+  return
+ }
+ 
+ newUser, err := handler.userApp.SaveUser(&user)
+ if err != nil {
+  c.JSON(http.StatusInternalServerError, err)
+  return
+ }
+
+ // Sending email everytime we create a new User
+ errSendMail := handler.wk.SendEmail(&worker.Payload{UserName: newUser.FullName(), TemplateName: "welcome.html", To: newUser.Email})
+ if errSendMail != nil {
+  c.JSON(http.StatusInternalServerError, errSendMail)
+ }
+ c.JSON(http.StatusCreated, newUser.PublicUser())
+}
+
+// mailer/tasks/handlres.go
+func HandleEmailTask(c context.Context, t *asynq.Task) error {
+ // Get user ID from given task.
+ var data map[string]interface{}
+ if err := json.Unmarshal(t.Payload(), &data); err != nil {
+  return err
+ }
+
+ templateData := Payload{
+  UserName: data["UserName"].(string),
+ }
+ to := data["To"].(string)
+ fmt.Printf("Sending Email to %s\n", data["UserName"].(string))
+ go SendEmailTask(to, data["TemplateName"].(string), templateData)
+
+ return nil
 }
 ```
