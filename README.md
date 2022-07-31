@@ -4,17 +4,19 @@
 
 Halo semua! Perkenalkan saya Ghozy, pada kesempatan kali ini saya ingin berbagi tentang sebuah apps sederhana bernama **Tangled**. **Tangled** berdasarkan bahasa Inggris berarti **kusut**, sedangkan **Tangle(t)** dalam bahasa Jawa memiliki arti **tanya** sehingga aplikasi **Tangled** diharapkan dapat menjadi sebuah aplikasi untuk bertanya ketika kalian sudah merasa kusut terutama karena kerjain sebuah kodingan maupun design 🤪.
 
-Aplikasi **Tangled** untuk saat ini masih berjalan pada platform iOS dan telah terintegrasi dengan ***micro-services***. Pada percobaan kali ini, saya menggunakan arsitektur DDD (*Domain-Drive Design*) pada ***backend service*** untuk mengatur data **post** dan **comment** yang telah di kirim/minta oleh **Tangled**.
+Aplikasi **Tangled** untuk saat ini masih berjalan pada platform iOS dan telah terintegrasi dengan ***microservices***. Pada percobaan kali ini, saya menggunakan arsitektur DDD (*Domain-Drive Design*) pada ***backend service*** untuk mengatur data **post** dan **comment** yang telah dikirim/diminta oleh **Tangled** serta memanfaatkan **mailer service** untuk pengiriman *e-mail* kepada *user*.
 
-## **Let's having fun with Go**
+## **Let's having fun with Golang (Go Language)**
 
-Oke, sebelum kita mulai bahsa lebih lanjut tentang gimana saya bikin *micro-services* dengan Go, mari kita bahas dulu kenapa harus dengan Go?
+Oke, sebelum kita mulai bahasa lebih lanjut tentang gimana saya bikin *microservices* dengan Go, mari kita bahas dulu kenapa harus dengan Go?
 
-Pertama kalinya saya menggunakan Go itu sejak 2020 dan hal tersebut menjadi pengalaman baru bagi saya yang terbiasa menggunakan Python sebagai bahasa utama dalam mengerjakan tugas akhir kala itu. Sebagai bahasa yang katanya menjadi penyempurna dari bahasa C/C++, kini Golang sangat terkenal dan banyak digunakan oleh perusahaan baik *Start-up* maupun BUMN. Salah satu alasan mengapa Go menjadi terkenal karena kecepatannya dalam bekerja. Golang merupakan *statically-typed language* yang berarti Golang tidak memerlukan proses lebih untuk mentranslasi *code* yang ada layaknya *dynamically-typed language*, serta dikombinasikannya dengan fitur *concurrency* yang dapat mengoptimalkan jumlah *core* yang dimiliki sehingga dapat mempercepat Golang dalam memproses suatu *task*.
+Pertama kalinya saya menggunakan Go itu sejak 2020 dan hal tersebut menjadi pengalaman baru bagi saya yang terbiasa menggunakan Python sebagai bahasa utama dalam mengerjakan tugas akhir kala itu. Sebagai bahasa yang katanya menjadi penyempurna dari bahasa C/C++, kini Go sangat terkenal dan banyak digunakan oleh perusahaan baik *Start-up* maupun BUMN. Salah satu alasan mengapa Go menjadi terkenal karena kecepatannya dalam bekerja. Go merupakan *statically-typed language* yang berarti Go tidak memerlukan proses lebih untuk mentranslasi *code* yang ada layaknya *dynamically-typed language*, serta dikombinasikannya dengan fitur *concurrency* yang dapat mengoptimalkan jumlah *core* yang dimiliki sehingga dapat mempercepat Go dalam memproses suatu *task*.
 
 Untuk lebih lanjut dalam mengenal Go, kalian bisa melakukan *research* tersendiri yaa terkait Go!
 
-## **Micro-services**
+## **Microservices**
+
+Ketika kita membahas tentang *microservices* berarti kita akan membagi suatu *service* menjadi lebih kecil dan saling terhubung satu antar lainnya. Pada kesempatan ini saya membuat dua *services* sederhana yaitu *backend service* dan *mailer service*.
 
 ### **Backend service**
 
@@ -96,7 +98,7 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 
 ### **Mailer Service**
 
-Ketika kita berbicara tentang *micro-services*, maka sudah pasti adanya lebih dari satu *service* yang bekerja. Pada percobaan kali ini saya memadukan *backend service* dengan *mailer service* yang bertugas untuk mengirimkan *e-mail* setiap kali di pantik oleh *backend service*.
+Ketika kita berbicara tentang *microservices*, maka sudah pasti adanya lebih dari satu *service* yang bekerja. Pada percobaan kali ini saya memadukan *backend service* dengan *mailer service* yang bertugas untuk mengirimkan *e-mail* setiap kali di pantik oleh *backend service*.
 
 *Mailer service* bekerja dengan memanfaatkan [gomail.v2](gopkg.in/gomail.v2) sebagai *framework mailer*. Dalam menghubungkan antara *backend service* dengan *mailer service*, saya memanfaatkan *framework* [asynq](github.com/hibiken/asynq) yang bekerja dibawah *redis*.
 
