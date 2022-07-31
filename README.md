@@ -20,7 +20,7 @@ Ketika kita membahas tentang *microservices* berarti kita akan membagi suatu *se
 
 ### **Backend service**
 
-Pada bagian ini saya ingin sedikit menjelaskan tentang bagaimana DDD dapat bekerja pada Go (tentu *code* ini masih jauh dari kata sempurna, jadi mohon pengertiannya yaa). Sebelumnya saya sangat merekomendasikan kalian untuk membaca buku *Architecture Patterns with Python* yang ditulis oleh Harry J.W. Percival & Bob Gregory, meski buku tersebut memberikan contoh konsep DDD pada bahasa Python tapi konsep yang di terapkan cukup identik dengan yang saya terapkan pada Go kali ini.
+Pada bagian ini saya ingin sedikit menjelaskan tentang bagaimana DDD dapat bekerja pada Go (tentu *code* ini masih jauh dari kata sempurna, jadi mohon pengertiannya yaa). Sebelumnya saya sangat merekomendasikan kalian untuk membaca buku *Architecture Patterns with Python* yang ditulis oleh Harry J.W. Percival & Bob Gregory, meski buku tersebut memberikan contoh konsep DDD pada bahasa Python tapi konsep yang diterapkan cukup identik dengan yang saya terapkan pada Go kali ini.
 
 Kita akan memulai dengan pembahasan **Domain Model**. Bagi teman-teman di Apple Developer Academy mungkin sudah tidak asing dengan kata *Domain Investigate* dan *General Investigate*. *Domain* dapat kita artikan secara sederhana sebagai hal/masalah yang ingin kita selesaikan. Pada kasus ini masalah yang akan kita selesaikan adalah bagaimana seorang *user* dapat bertanya maupun menjawab pertanyaan secara tak dikenal. Maka kali ini kita akan memiliki 2 entitas diantaranya Post dan Comment seperti ilustrasi dibawah ini.
 
@@ -98,7 +98,7 @@ func (handler *Handler) SaveComment(c *gin.Context) {
 
 ### **Mailer Service**
 
-Ketika kita berbicara tentang *microservices*, maka sudah pasti adanya lebih dari satu *service* yang bekerja. Pada percobaan kali ini saya memadukan *backend service* dengan *mailer service* yang bertugas untuk mengirimkan *e-mail* setiap kali di pantik oleh *backend service*.
+Ketika kita berbicara tentang *microservices*, maka sudah pasti adanya lebih dari satu *service* yang bekerja. Pada percobaan kali ini saya memadukan *backend service* dengan *mailer service* yang bertugas untuk mengirimkan *e-mail* setiap kali dipantik oleh *backend service*.
 
 *Mailer service* bekerja dengan memanfaatkan [gomail.v2](gopkg.in/gomail.v2) sebagai *framework mailer*. Dalam menghubungkan antara *backend service* dengan *mailer service*, saya memanfaatkan *framework* [asynq](github.com/hibiken/asynq) yang bekerja dibawah *redis*.
 
