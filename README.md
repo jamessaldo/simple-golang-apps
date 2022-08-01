@@ -8,7 +8,7 @@ Aplikasi **Tangled** untuk saat ini masih berjalan pada platform iOS dan telah t
 
 ## **Let's having fun with Golang (Go Language)**
 
-Oke, sebelum kita mulai bahasa lebih lanjut tentang gimana saya bikin *microservices* dengan Go, mari kita bahas dulu kenapa harus dengan Go?
+Oke, sebelum kita mulai lebih lanjut tentang gimana saya bikin *microservices* dengan Go, mari kita bahas dulu kenapa harus dengan Go?
 
 Pertama kalinya saya menggunakan Go itu sejak 2020 dan hal tersebut menjadi pengalaman baru bagi saya yang terbiasa menggunakan Python sebagai bahasa utama dalam mengerjakan tugas akhir kala itu. Sebagai bahasa yang katanya menjadi penyempurna dari bahasa C/C++, kini Go sangat terkenal dan banyak digunakan oleh perusahaan baik *Start-up* maupun BUMN. Salah satu alasan mengapa Go menjadi terkenal karena kecepatannya dalam bekerja. Go merupakan *statically-typed language* yang berarti Go tidak memerlukan proses lebih untuk mentranslasi *code* yang ada layaknya *dynamically-typed language*, serta dikombinasikannya dengan fitur *concurrency* yang dapat mengoptimalkan jumlah *core* yang dimiliki sehingga dapat mempercepat Go dalam memproses suatu *task*.
 
