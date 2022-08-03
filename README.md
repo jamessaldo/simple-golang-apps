@@ -1,4 +1,4 @@
-# **Tangled - Nano Challange 2**
+# **Tangled**
 
 ## **Intros**
 
@@ -47,7 +47,7 @@ classDiagram
 
 Setelah kita membuat *Domain Model*, kita akan sedikit membahas tentang *repository pattern*. *Repository* adalah sebuah *layer* yang bekerja tepat sebelum *database layer*, dimana *repository pattern* merupakan bentuk abstraksi terhadap penyimpanan yang persisten sehingga kita dapat mengatur kapan dan bagaimana kita menyimpan data pada memori maupun pada *database*.
 
-Catatan: Sebenarnya untuk sebuah *service* yang hanya membuat CRUD sederhana seperti ini kita tidak perlu menggunakan konsep *Domain Model* dan *repository pattern* karena akan membutuhkan usaha yang lebih dibandingkan dengan penggunaan ORM/*ActiceRecord pattern*. ***Penerapan ini hanya sebagai bentuk pembelajaran semata.***
+Catatan: Sebenarnya untuk sebuah *service* yang hanya membuat CRUD sederhana seperti ini kita tidak perlu menggunakan konsep *Domain Model* dan *repository pattern* karena akan membutuhkan usaha yang lebih dibandingkan dengan penggunaan ORM/*ActiveRecord pattern*. ***Penerapan ini hanya sebagai bentuk pembelajaran semata.***
 
 Berikut merupakan potongan *code* dari salah satu fungsi untuk menyimpan data *comment* dari *comment repository*.
 
@@ -145,3 +145,7 @@ func HandleEmailTask(c context.Context, t *asynq.Task) error {
  return nil
 }
 ```
+
+Ooops! Sepertinya sampai sini dulu pembahasan kita terkait pengembangan *microservices* dengan bahasa Go, semoga kalian dapat memahami dengan mudah akan penjelasan di atas. Kedepannya artikel ini akan diperbarui kembali terkait bagaimana melakukan integrasi antara SwiftUI dengan *backend service*, stay in touch if you want to know more yes!😬
+
+Terima kasih telah membaca~
