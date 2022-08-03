@@ -146,6 +146,6 @@ func HandleEmailTask(c context.Context, t *asynq.Task) error {
 }
 ```
 
-Ooops! Sepertinya sampai sini dulu pembahasan kita terkait pengembangan *microservices* dengan bahasa Go, semoga kalian dapat memahami dengan mudah akan penjelasan di atas. Kedepannya artikel ini akan diperbarui kembali terkait bagaimana melakukan integrasi antara SwiftUI dengan *backend service*, *please stay in touch if you want to know more yes!*😬
+Ooops! Sepertinya sampai sini dulu pembahasan kita terkait pengembangan *microservices* dengan bahasa Go, semoga kalian dapat memahami dengan mudah akan penjelasan di atas. Kedepannya artikel ini akan diperbarui kembali terkait bagaimana melakukan integrasi antara SwiftUI dengan *backend service*, *please stay in touch if you want to know more yes!* 😬
 
 Terima kasih telah membaca~
